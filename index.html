@@ -304,7 +304,74 @@
   .streak-val { font-size: 32px; font-weight: 800; color: var(--accent-cyan); font-family: monospace; }
   .streak-label { font-size: 9px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
 
-  input[type=color] { width: 36px; height: 30px; border: 1px solid var(--bg-border); border-radius: 4px; background: var(--bg-deep); cursor: pointer; padding: 2px; }
+  /* ZONE IN */
+  .zonein-overlay {
+    position: fixed; inset: 0; z-index: 3000;
+    background: #060810;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+  }
+  .zonein-step {
+    width: 480px; max-width: 95vw; text-align: center;
+  }
+  .zonein-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 32px; }
+  .zonein-dot { width: 8px; height: 8px; border-radius: 50%; background: #1e2d4a; transition: background .3s; }
+  .zonein-dot.active { background: var(--accent-cyan); }
+  .zonein-title { font-size: 13px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+  .zonein-subtitle { font-size: 28px; font-weight: 700; margin-bottom: 32px; }
+  .zonein-subtitle span { color: var(--accent-cyan); }
+  .zonein-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 32px; }
+  .zonein-option {
+    background: var(--bg-card); border: 1px solid var(--bg-border);
+    border-radius: 10px; padding: 18px 12px; cursor: pointer; transition: all .2s;
+    font-size: 13px; color: var(--text-dim);
+  }
+  .zonein-option:hover { border-color: var(--accent-cyan); color: var(--text-primary); transform: translateY(-2px); }
+  .zonein-option.selected { border-color: var(--accent-cyan); background: rgba(6,182,212,.1); color: var(--accent-cyan); }
+  .zonein-option-icon { font-size: 24px; margin-bottom: 8px; }
+
+  /* TIMER */
+  .timer-disc-name { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .timer-type-badge { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 48px; }
+  .timer-display {
+    font-size: 72px; font-weight: 800; font-family: monospace;
+    letter-spacing: 4px; color: #fff; margin-bottom: 12px;
+    text-shadow: 0 0 40px rgba(6,182,212,.4);
+  }
+  .timer-label { font-size: 10px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 48px; }
+  .timer-actions { display: flex; gap: 12px; justify-content: center; }
+  .btn-timer-pause {
+    background: var(--bg-card); border: 1px solid var(--bg-border); color: var(--text-dim);
+    padding: 12px 28px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;
+  }
+  .btn-timer-end {
+    background: var(--accent-cyan); color: #000; border: none;
+    padding: 12px 32px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 800;
+    letter-spacing: 1px;
+  }
+  .btn-zonein-back {
+    background: transparent; border: none; color: var(--text-muted);
+    cursor: pointer; font-size: 12px; margin-top: 20px;
+  }
+  .btn-zonein-next {
+    background: var(--accent-cyan); color: #000; border: none;
+    padding: 12px 40px; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 800;
+    letter-spacing: 1px; transition: opacity .2s;
+  }
+  .btn-zonein-next:disabled { opacity: .3; cursor: default; }
+
+  /* COLOR SWATCHES */
+  .color-swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
+  .color-swatch {
+    width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+    border: 2px solid transparent; transition: transform .15s, border-color .15s;
+    flex-shrink: 0;
+  }
+  .color-swatch:hover { transform: scale(1.15); }
+  .color-swatch.active { border-color: #fff; transform: scale(1.1); }
+  .color-custom-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  .color-custom-preview { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--bg-border); cursor: pointer; flex-shrink: 0; }
+  input[type=color] { width: 0; height: 0; opacity: 0; position: absolute; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -344,7 +411,7 @@
   <div id="topbar">
     <div class="topbar-tagline">Pronto para o <b>foco profundo</b>?</div>
     <div class="topbar-actions">
-      <button class="btn-outline" onclick="openDeepWork()">Zone In</button>
+      <button class="btn-outline" onclick="openZoneIn()">Zone In</button>
       <button class="btn-primary" onclick="showTab('provas'); setTimeout(openAddProva,100)">+ Registrar Prova</button>
     </div>
   </div>
@@ -403,25 +470,29 @@
   <div class="modal">
     <h2 id="disc-modal-title">Nova Disciplina</h2>
     <p class="modal-sub">Adicione uma nova disciplina para acompanhar seu progresso.</p>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Nome</label>
-        <input class="form-input" id="disc-nome" placeholder="Ex: Matemática">
-      </div>
-      <div class="form-group" style="max-width:80px">
-        <label class="form-label">Cor</label>
-        <input type="color" id="disc-cor" value="#3b82f6">
-      </div>
+    <div class="form-group">
+      <label class="form-label">Nome</label>
+      <input class="form-input" id="disc-nome" placeholder="Ex: Matemática">
     </div>
     <div class="form-group">
-      <label class="form-label">XP Inicial (opcional)</label>
-      <input class="form-input" id="disc-xp" type="number" min="0" placeholder="0" value="0">
+      <label class="form-label">Cor</label>
+      <div class="color-swatches" id="color-swatches"></div>
+      <div class="color-custom-row">
+        <div class="color-custom-preview" id="color-custom-preview" onclick="document.getElementById('disc-cor-hidden').click()" title="Cor personalizada"></div>
+        <span style="font-size:11px;color:var(--text-muted)">Cor personalizada</span>
+        <input type="color" id="disc-cor-hidden" value="#3b82f6" oninput="onCustomColor(this.value)">
+      </div>
     </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-disc')">Cancelar</button>
       <button class="btn-save" onclick="saveDisc()">Salvar</button>
     </div>
   </div>
+</div>
+
+<!-- ZONE IN OVERLAY -->
+<div id="zonein-overlay" class="zonein-overlay hidden">
+  <div class="zonein-step" id="zonein-content"></div>
 </div>
 
 <div id="toast" class="toast hidden"></div>
@@ -431,81 +502,39 @@
 
 const DISC_COLORS = [
   '#f472b6','#3b82f6','#22c55e','#ef4444','#10b981',
-  '#8b5cf6','#f59e0b','#ec4899','#06b6d4','#84cc16'
+  '#8b5cf6','#f59e0b','#ec4899','#06b6d4','#84cc16',
+  '#a78bfa','#fb923c','#34d399','#f87171','#38bdf8','#fbbf24',
 ];
 
 const DEFAULT_DISCS = [
-  {id:'mat', nome:'Matemática',      cor:'#f472b6', xp:275},
-  {id:'qui', nome:'Química',         cor:'#3b82f6', xp:362},
-  {id:'fis', nome:'Física',          cor:'#22c55e', xp:349},
-  {id:'bio', nome:'Biologia',        cor:'#ef4444', xp:368},
-  {id:'por', nome:'Língua Portuguesa',cor:'#10b981', xp:367},
-  {id:'geo', nome:'Geografia',       cor:'#8b5cf6', xp:348},
-  {id:'his', nome:'História',        cor:'#f59e0b', xp:260},
-  {id:'fil', nome:'Filosofia',       cor:'#ec4899', xp:300},
-  {id:'soc', nome:'Sociologia',      cor:'#06b6d4', xp:167},
-  {id:'ing', nome:'Língua Inglesa',  cor:'#64748b', xp:308},
-  {id:'art', nome:'Arte',            cor:'#84cc16', xp:200},
+  {id:'mat', nome:'Matemática',       cor:'#f472b6', xp:0},
+  {id:'qui', nome:'Química',          cor:'#3b82f6', xp:0},
+  {id:'fis', nome:'Física',           cor:'#22c55e', xp:0},
+  {id:'bio', nome:'Biologia',         cor:'#ef4444', xp:0},
+  {id:'por', nome:'Língua Portuguesa',cor:'#10b981', xp:0},
+  {id:'geo', nome:'Geografia',        cor:'#8b5cf6', xp:0},
+  {id:'his', nome:'História',         cor:'#f59e0b', xp:0},
+  {id:'fil', nome:'Filosofia',        cor:'#ec4899', xp:0},
+  {id:'soc', nome:'Sociologia',       cor:'#06b6d4', xp:0},
 ];
 
 const now = new Date();
 const fmt = (d) => d.toISOString().split('T')[0];
-const d = (offset) => { const x = new Date(now); x.setDate(x.getDate()-offset); return fmt(x); };
 
-const DEFAULT_PROVAS = [
-  {
-    id:'p1', nome:'Simulado 4', tipo:'simulado', data: d(3),
-    disciplinas:[
-      {id:'mat',acertos:100,total:100},{id:'qui',acertos:100,total:100},
-      {id:'fis',acertos:88,total:100},{id:'bio',acertos:92,total:100},
-      {id:'por',acertos:93,total:100},{id:'geo',acertos:92,total:100},
-      {id:'his',acertos:93,total:100},{id:'fil',acertos:100,total:100},
-      {id:'soc',acertos:67,total:100},
-    ]
-  },
-  {
-    id:'p2', nome:'Prova 4', tipo:'prova', data: d(3),
-    disciplinas:[
-      {id:'geo',acertos:667,total:1000},{id:'qui',acertos:733,total:1000},
-      {id:'fis',acertos:933,total:1000},{id:'bio',acertos:867,total:1000},
-    ]
-  },
-  {
-    id:'p3', nome:'Prova 2F D1', tipo:'prova', data: d(3),
-    disciplinas:[{id:'por',acertos:88,total:100}]
-  },
-  {
-    id:'p4', nome:'P2 1F', tipo:'prova', data: d(3),
-    disciplinas:[
-      {id:'mat',acertos:12,total:12},{id:'qui',acertos:8,total:9},
-      {id:'fis',acertos:9,total:10},{id:'bio',acertos:9,total:9},
-      {id:'por',acertos:14,total:15},{id:'geo',acertos:8,total:9},
-      {id:'his',acertos:4,total:6},{id:'fil',acertos:1,total:1},
-      {id:'soc',acertos:0,total:1},
-    ]
-  },
-  {
-    id:'p5', nome:'P1 1F', tipo:'prova', data: d(7),
-    disciplinas:[
-      {id:'mat',acertos:80,total:100},{id:'qui',acertos:75,total:100},
-      {id:'fis',acertos:85,total:100},{id:'bio',acertos:78,total:100},
-      {id:'por',acertos:82,total:100},{id:'geo',acertos:70,total:100},
-    ]
-  },
-];
+const DEFAULT_PROVAS = [];
 
 // ─── STATE ──────────────────────────────────────────────────────────────────
 
 function loadState() {
   try {
-    const s = localStorage.getItem('studyos_v2');
+    const s = localStorage.getItem('studyos_v3');
     if (s) return JSON.parse(s);
   } catch(e) {}
   return { discs: DEFAULT_DISCS, provas: DEFAULT_PROVAS, username: 'Você' };
 }
 
 function saveState() {
-  localStorage.setItem('studyos_v2', JSON.stringify(state));
+  localStorage.setItem('studyos_v3', JSON.stringify(state));
 }
 
 let state = loadState();
@@ -580,11 +609,154 @@ function showToast(msg) {
 
 function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-function openDeepWork() { showToast('🧘 Entre em foco profundo. Boa sessão!'); }
+// ─── ZONE IN ────────────────────────────────────────────────────────────────
+
+let ziStep = 1, ziDisc = null, ziType = null;
+let timerInterval = null, timerSeconds = 0, timerPaused = false;
+
+const STUDY_TYPES = [
+  { id:'pratica',  icon:'⚡', label:'Prática' },
+  { id:'teoria',   icon:'📖', label:'Teoria' },
+  { id:'revisao',  icon:'🔄', label:'Revisão' },
+  { id:'leitura',  icon:'📚', label:'Leitura' },
+];
+
+function openZoneIn() {
+  ziStep = 1; ziDisc = null; ziType = null;
+  timerSeconds = 0; timerPaused = false;
+  if (timerInterval) clearInterval(timerInterval);
+  document.getElementById('zonein-overlay').classList.remove('hidden');
+  renderZoneIn();
+}
+
+function closeZoneIn() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+  document.getElementById('zonein-overlay').classList.add('hidden');
+}
+
+function renderZoneIn() {
+  const el = document.getElementById('zonein-content');
+  if (ziStep === 1) {
+    const discGrid = state.discs.map(d => `
+      <div class="zonein-option ${ziDisc===d.id?'selected':''}" onclick="ziSelectDisc('${d.id}')">
+        <div class="zonein-option-icon"><span style="display:inline-block;width:20px;height:20px;border-radius:50%;background:${d.cor}"></span></div>
+        ${d.nome}
+      </div>
+    `).join('');
+    el.innerHTML = `
+      <div class="zonein-dots">
+        <div class="zonein-dot active"></div>
+        <div class="zonein-dot"></div>
+        <div class="zonein-dot"></div>
+      </div>
+      <div class="zonein-title">Passo 1 de 3 · Foco na disciplina</div>
+      <div class="zonein-subtitle">Selecione a <span>Matéria</span></div>
+      <div class="zonein-grid">${discGrid || '<p style="color:var(--text-muted)">Adicione disciplinas primeiro.</p>'}</div>
+      <button class="btn-zonein-next" ${!ziDisc?'disabled':''} onclick="ziNext()">Continuar →</button>
+      <br><button class="btn-zonein-back" onclick="closeZoneIn()">Cancelar</button>
+    `;
+  } else if (ziStep === 2) {
+    const typeGrid = STUDY_TYPES.map(t => `
+      <div class="zonein-option ${ziType===t.id?'selected':''}" onclick="ziSelectType('${t.id}')">
+        <div class="zonein-option-icon">${t.icon}</div>
+        ${t.label}
+      </div>
+    `).join('');
+    el.innerHTML = `
+      <div class="zonein-dots">
+        <div class="zonein-dot active"></div>
+        <div class="zonein-dot active"></div>
+        <div class="zonein-dot"></div>
+      </div>
+      <div class="zonein-title">Passo 2 de 3 · Tipo de estudo</div>
+      <div class="zonein-subtitle">Como você vai <span>estudar</span>?</div>
+      <div class="zonein-grid">${typeGrid}</div>
+      <button class="btn-zonein-next" ${!ziType?'disabled':''} onclick="ziNext()">Iniciar Sessão →</button>
+      <br><button class="btn-zonein-back" onclick="ziBack()">← Voltar</button>
+    `;
+  } else if (ziStep === 3) {
+    const disc = getDiscById(ziDisc);
+    const typeLabel = STUDY_TYPES.find(t=>t.id===ziType)?.label || '';
+    el.innerHTML = `
+      <div class="zonein-dots">
+        <div class="zonein-dot active"></div>
+        <div class="zonein-dot active"></div>
+        <div class="zonein-dot active"></div>
+      </div>
+      <div class="timer-disc-name" style="color:${disc?.cor||'#fff'}">${disc?.nome||''}</div>
+      <div class="timer-type-badge">${typeLabel}</div>
+      <div class="timer-display" id="zi-timer">00:00:00</div>
+      <div class="timer-label">em andamento</div>
+      <div class="timer-actions">
+        <button class="btn-timer-pause" id="zi-pause-btn" onclick="ziTogglePause()">Pausar</button>
+        <button class="btn-timer-end" onclick="ziFinish()">Finalizar Sessão</button>
+      </div>
+    `;
+    timerSeconds = 0; timerPaused = false;
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      if (!timerPaused) {
+        timerSeconds++;
+        const h = String(Math.floor(timerSeconds/3600)).padStart(2,'0');
+        const m = String(Math.floor(timerSeconds%3600/60)).padStart(2,'0');
+        const s = String(timerSeconds%60).padStart(2,'0');
+        const el = document.getElementById('zi-timer');
+        if (el) el.textContent = `${h}:${m}:${s}`;
+      }
+    }, 1000);
+  }
+}
+
+function ziSelectDisc(id) { ziDisc = id; renderZoneIn(); }
+function ziSelectType(id) { ziType = id; renderZoneIn(); }
+function ziNext() { ziStep++; renderZoneIn(); }
+function ziBack() { ziStep--; renderZoneIn(); }
+
+function ziTogglePause() {
+  timerPaused = !timerPaused;
+  const btn = document.getElementById('zi-pause-btn');
+  if (btn) btn.textContent = timerPaused ? 'Retomar' : 'Pausar';
+}
+
+function ziFinish() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = null;
+  const h = String(Math.floor(timerSeconds/3600)).padStart(2,'0');
+  const m = String(Math.floor(timerSeconds%3600/60)).padStart(2,'0');
+  const s = String(timerSeconds%60).padStart(2,'0');
+  const disc = getDiscById(ziDisc);
+  closeZoneIn();
+  showToast(`Sessão de ${h}:${m}:${s} em ${disc?.nome||''} finalizada!`);
+}
 
 // ─── ADD DISC MODAL ─────────────────────────────────────────────────────────
 
 let editingDiscId = null;
+let currentDiscColor = '#3b82f6';
+
+function renderColorSwatches() {
+  const swatchEl = document.getElementById('color-swatches');
+  swatchEl.innerHTML = DISC_COLORS.map(c => `
+    <div class="color-swatch ${currentDiscColor===c?'active':''}"
+      style="background:${c}"
+      onclick="selectSwatch('${c}')">
+    </div>
+  `).join('');
+  const preview = document.getElementById('color-custom-preview');
+  if (preview) preview.style.background = currentDiscColor;
+}
+
+function selectSwatch(color) {
+  currentDiscColor = color;
+  document.getElementById('disc-cor-hidden').value = color;
+  renderColorSwatches();
+}
+
+function onCustomColor(color) {
+  currentDiscColor = color;
+  renderColorSwatches();
+}
 
 function openAddDisc(discId) {
   editingDiscId = discId || null;
@@ -593,27 +765,25 @@ function openAddDisc(discId) {
     const d = getDiscById(discId);
     document.getElementById('disc-modal-title').textContent = 'Editar Disciplina';
     document.getElementById('disc-nome').value = d.nome;
-    document.getElementById('disc-cor').value = d.cor;
-    document.getElementById('disc-xp').value = d.xp;
+    currentDiscColor = d.cor;
   } else {
     document.getElementById('disc-modal-title').textContent = 'Nova Disciplina';
     document.getElementById('disc-nome').value = '';
-    document.getElementById('disc-cor').value = DISC_COLORS[state.discs.length % DISC_COLORS.length];
-    document.getElementById('disc-xp').value = '0';
+    currentDiscColor = DISC_COLORS[state.discs.length % DISC_COLORS.length];
   }
+  document.getElementById('disc-cor-hidden').value = currentDiscColor;
+  renderColorSwatches();
   modal.classList.remove('hidden');
 }
 
 function saveDisc() {
   const nome = document.getElementById('disc-nome').value.trim();
   if (!nome) return;
-  const cor = document.getElementById('disc-cor').value;
-  const xp = parseInt(document.getElementById('disc-xp').value) || 0;
   if (editingDiscId) {
     const d = getDiscById(editingDiscId);
-    d.nome = nome; d.cor = cor; d.xp = xp;
+    d.nome = nome; d.cor = currentDiscColor;
   } else {
-    state.discs.push({ id: uid(), nome, cor, xp });
+    state.discs.push({ id: uid(), nome, cor: currentDiscColor, xp: 0 });
   }
   saveState(); closeModal('modal-disc'); render(); showToast('Disciplina salva!');
 }
