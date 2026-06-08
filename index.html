@@ -138,6 +138,20 @@
   }
   .icon-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-1px); }
   .icon-btn:active { transform: scale(.94); }
+
+  /* AVATAR */
+  .footer-user-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .avatar {
+    border-radius: 50%; flex-shrink: 0; border: 2px solid var(--bg-border);
+    background-color: var(--bg-deep); background-size: cover; background-position: center;
+    cursor: pointer; transition: border-color .15s, transform .15s; padding: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-muted); font-weight: 800; overflow: hidden;
+  }
+  .avatar:hover { border-color: var(--accent-cyan); transform: scale(1.05); }
+  .avatar-sm { width: 38px; height: 38px; font-size: 15px; }
+  .avatar-xs { width: 30px; height: 30px; font-size: 12px; border-width: 1px; cursor: default; }
+  .avatar-xs:hover { transform: none; border-color: var(--bg-border); }
   .sidebar-scrim {
     position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.55);
     backdrop-filter: blur(2px); animation: fadeScrim .2s ease;
@@ -415,6 +429,85 @@
   }
   .btn-zonein-next:disabled { opacity: .3; cursor: default; }
 
+  /* ZONE IN — SESSÃO DE FOCO (full screen) */
+  #zonein-content.zi-session { width: 100%; max-width: 100%; height: 100dvh; text-align: left; }
+  .zi-session-wrap { display: grid; grid-template-columns: 1fr 380px; height: 100dvh; }
+  .zi-main { display: flex; flex-direction: column; padding: 0; min-width: 0; position: relative; }
+  .zi-topbar { display: flex; align-items: center; gap: 20px; padding: 16px 28px; border-bottom: 1px solid var(--bg-border); }
+  .zi-quick { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .zi-quick-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; color: var(--text-muted); }
+  .zi-quick input {
+    flex: 1; min-width: 0; background: transparent; border: none; border-bottom: 1px solid var(--bg-border);
+    color: var(--text-primary); font-size: 13px; font-style: italic; padding: 6px 2px; outline: none; font-family: inherit;
+  }
+  .zi-quick input:focus { border-bottom-color: var(--accent-cyan); }
+  .zi-disc-chip {
+    display: inline-flex; align-items: center; gap: 7px; padding: 5px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; white-space: nowrap;
+  }
+  .zi-center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+  .zi-timer-big {
+    font-size: clamp(64px, 14vw, 140px); font-weight: 800; font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums; letter-spacing: 4px; color: #fff; line-height: 1;
+    text-shadow: 0 0 60px color-mix(in srgb, var(--accent-cyan) 45%, transparent);
+  }
+  .zi-timer-cap { font-size: 11px; letter-spacing: 4px; color: var(--text-muted); text-transform: uppercase; margin-top: 16px; }
+  .zi-meta-label { font-size: 10px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-top: 56px; }
+  .zi-meta-title { font-size: 26px; font-weight: 700; margin-top: 10px; }
+  .zi-meta-sub { font-size: 14px; font-style: italic; color: var(--text-dim); margin-top: 6px; }
+  .zi-warm { position: absolute; left: 28px; bottom: 24px; width: 150px; }
+  .zi-warm-label { font-size: 10px; letter-spacing: 2px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; }
+  .zi-warm-sub { font-size: 10px; color: var(--text-muted); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
+  .zi-warm-bar { height: 4px; border-radius: 4px; background: #1e2d4a; overflow: hidden; }
+  .zi-warm-fill { height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); transition: width .4s; }
+  .zi-foot { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 18px; border-top: 1px solid var(--bg-border); }
+  .zi-foot-meta { font-size: 12px; letter-spacing: 1px; color: var(--text-dim); }
+
+  .zi-panel { border-left: 1px solid var(--bg-border); background: var(--bg-card); display: flex; flex-direction: column; min-height: 0; }
+  .zi-panel-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--bg-border); }
+  .zi-panel-title { font-size: 11px; font-weight: 800; letter-spacing: 2px; color: var(--text-dim); text-transform: uppercase; }
+  .zi-ring { font-size: 12px; font-weight: 800; color: var(--accent-cyan); font-family: var(--font-mono); }
+  .zi-bateria { display: flex; align-items: center; gap: 8px; padding: 10px 18px; border-bottom: 1px solid var(--bg-border); font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--accent-cyan); }
+  .zi-ex-list { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+  .zi-ex { background: var(--bg-deep); border: 1px solid var(--bg-border); border-radius: var(--r-md); padding: 12px; transition: border-color .2s; }
+  .zi-ex.active { border-color: var(--accent-cyan); box-shadow: var(--glow-cyan); }
+  .zi-ex.done { opacity: .6; }
+  .zi-ex-top { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .zi-ex-name { font-size: 12px; font-weight: 700; margin-right: auto; }
+  .zi-chip {
+    display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700;
+    padding: 3px 8px; border-radius: 5px; border: 1px solid var(--bg-border); color: var(--text-muted);
+    background: transparent; transition: all .15s;
+  }
+  .zi-chip.on-feito { color: var(--green); border-color: var(--green); background: rgba(34,197,94,.12); }
+  .zi-chip.on-diss { color: var(--accent-cyan); border-color: var(--accent-cyan); background: color-mix(in srgb, var(--accent-cyan) 14%, transparent); }
+  .zi-chip.on-pend { color: var(--yellow); border-color: var(--yellow); background: rgba(234,179,8,.12); }
+  .zi-ex-note {
+    width: 100%; background: transparent; border: 1px solid var(--bg-border); border-radius: var(--r-sm);
+    color: var(--text-primary); font-size: 11px; font-style: italic; padding: 6px 8px; outline: none; font-family: inherit;
+  }
+  .zi-ex-note:focus { border-color: var(--accent-cyan); }
+  .zi-ex-timer { font-size: 12px; font-family: var(--font-mono); color: var(--text-dim); margin: 4px 0 8px; }
+  .zi-ex-timer b { color: #fff; }
+  .zi-ex-timer.exceeded b { color: var(--red); }
+  .zi-add-ex { margin: 0 14px 12px; padding: 8px; border: 1px dashed var(--bg-border); border-radius: var(--r-sm); text-align: center; color: var(--text-muted); cursor: pointer; font-size: 11px; transition: all .15s; }
+  .zi-add-ex:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+  .zi-log { border-top: 1px solid var(--bg-border); padding: 12px 18px; max-height: 168px; overflow-y: auto; }
+  .zi-log-title { font-size: 10px; font-weight: 800; letter-spacing: 2px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+  .zi-log-row { display: flex; align-items: center; gap: 8px; font-size: 11px; font-family: var(--font-mono); margin-bottom: 5px; }
+  .zi-log-row .ln { color: var(--text-dim); margin-right: auto; }
+  .zi-log-tag { font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 4px; font-family: var(--font-sans); }
+  .zi-log-tag.ok { color: var(--green); background: rgba(34,197,94,.12); }
+  .zi-log-tag.bad { color: var(--red); background: rgba(239,68,68,.12); }
+
+  @media (max-width: 900px) {
+    .zi-session-wrap { grid-template-columns: 1fr; grid-template-rows: 1fr auto; overflow-y: auto; }
+    .zi-panel { border-left: none; border-top: 1px solid var(--bg-border); max-height: 60vh; }
+    .zi-timer-big { font-size: clamp(56px, 18vw, 96px); }
+    .zi-warm { position: static; margin: 0 auto 8px; }
+    .zi-topbar { flex-wrap: wrap; }
+  }
+
   /* COLOR SWATCHES */
   .color-swatches { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; }
   .color-swatch {
@@ -438,6 +531,65 @@
   .tp-bar { flex: 1; height: 6px; border-radius: 4px; background: #1e2d4a; overflow: hidden; }
   .tp-bar-fill { width: 68%; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
   .tp-btn { background: var(--accent-blue); color: #fff; border: none; border-radius: var(--r-sm); padding: 7px 16px; font-size: 12px; font-weight: 700; }
+
+  /* COUNTDOWN BANNER */
+  .countdown {
+    border: 1px solid color-mix(in srgb, var(--accent-cyan) 45%, var(--bg-border));
+    border-radius: var(--r-lg); padding: 22px; text-align: center; margin-bottom: 24px;
+    background: radial-gradient(120% 140% at 50% -20%, color-mix(in srgb, var(--accent-cyan) 16%, transparent), transparent 60%), var(--bg-card);
+    box-shadow: var(--glow-cyan);
+  }
+  .countdown-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-muted); }
+  .countdown-num { font-size: 64px; font-weight: 800; font-family: var(--font-mono); color: var(--accent-cyan); line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .countdown-target { font-size: 17px; font-style: italic; color: var(--text-dim); margin-top: 2px; }
+
+  /* WIDGETS (draggable) */
+  .widget { position: relative; }
+  .widget.dragging { opacity: .45; }
+  .widget.drag-over { outline: 2px dashed var(--accent-cyan); outline-offset: 4px; border-radius: var(--r-md); }
+  .drag-handle {
+    position: absolute; top: -2px; right: 0; cursor: grab; color: var(--text-muted);
+    font-size: 14px; padding: 4px 6px; opacity: 0; transition: opacity .15s; user-select: none;
+  }
+  .widget:hover .drag-handle { opacity: .7; }
+  .drag-handle:active { cursor: grabbing; }
+  .layout-hint { font-size: 10px; color: var(--text-muted); margin-bottom: 10px; }
+
+  /* HISTÓRICO DE FOCO */
+  .hist-row {
+    display: flex; align-items: center; gap: 12px; padding: 11px 14px; border-radius: var(--r-sm);
+    background: var(--bg-deep); margin-bottom: 7px; border: 1px solid transparent; transition: border-color .15s;
+  }
+  .hist-row:hover { border-color: var(--bg-border); }
+  .hist-name { font-size: 13px; font-weight: 700; }
+  .hist-spacer { margin-left: auto; }
+  .hist-type { font-size: 11px; color: var(--text-muted); margin-right: 14px; }
+  .hist-time { font-family: var(--font-mono); font-size: 13px; color: var(--accent-cyan); font-variant-numeric: tabular-nums; }
+
+  /* CONQUISTAS / MEDALHAS */
+  .badge-cat { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin: 14px 0 8px; }
+  .badge-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .badge {
+    background: var(--bg-deep); border: 1px solid var(--bg-border); border-radius: var(--r-md);
+    padding: 14px 8px; text-align: center; transition: transform .2s, border-color .2s;
+  }
+  .badge.unlocked { border-color: color-mix(in srgb, var(--accent-cyan) 50%, var(--bg-border)); }
+  .badge.unlocked:hover { transform: translateY(-3px); }
+  .badge.locked { opacity: .38; filter: grayscale(.6); }
+  .badge-icon { width: 40px; height: 40px; margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; }
+  .badge-label { font-size: 10px; color: var(--text-dim); line-height: 1.3; }
+
+  /* DIRECIONAMENTO */
+  .dir-tier-label { font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin: 22px 0 10px; }
+  .dir-card { border: 1px solid var(--bg-border); border-radius: var(--r-md); padding: 18px 20px; margin-bottom: 12px; background: var(--bg-card); position: relative; }
+  .dir-card.primary { border-color: var(--green); box-shadow: 0 0 0 1px rgba(34,197,94,.25), 0 10px 30px rgba(34,197,94,.08); }
+  .dir-card-name { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .dir-card.primary .dir-card-name { font-size: 26px; }
+  .dir-reason { font-size: 13px; color: var(--text-dim); line-height: 1.55; margin-bottom: 14px; max-width: 880px; }
+  .dir-metrics { display: flex; flex-wrap: wrap; gap: 18px; font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); }
+  .dir-metrics b { color: var(--text-primary); }
+  .dir-metrics .urg { color: var(--accent-cyan); }
+  .dir-tag { position: absolute; top: 18px; right: 20px; font-size: 11px; font-weight: 700; color: var(--green); background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.3); border-radius: 20px; padding: 4px 12px; }
 
   /* ─── RESPONSIVE ─────────────────────────────────────────────────── */
 
@@ -493,14 +645,23 @@
 <aside id="sidebar">
   <div class="sidebar-brand">
     <h1>STUDY OS</h1>
-    <p>MODO MONGE · V7.0</p>
+    <p>MODO FOCO</p>
   </div>
   <div class="sidebar-section-label">Disciplinas</div>
   <div id="sidebar-discs"></div>
   <div class="add-disc-btn" onclick="openAddDisc()">+ Nova Disciplina</div>
   <div class="sidebar-footer">
-    <div class="footer-name" id="footer-username">Você</div>
-    <div class="footer-level" id="footer-level-txt">Nível 1</div>
+    <div class="footer-user-row">
+      <button class="avatar avatar-sm" id="footer-avatar" aria-label="Trocar foto de perfil" title="Trocar foto de perfil" onclick="document.getElementById('avatar-input').click()"></button>
+      <input type="file" id="avatar-input" accept="image/*" class="hidden" onchange="onAvatarPick(event)">
+      <div style="min-width:0">
+        <div class="footer-name" id="footer-username">Você</div>
+        <div class="footer-level" id="footer-level-txt">Nível 1</div>
+      </div>
+      <button class="icon-btn" style="margin-left:auto;width:30px;height:30px" aria-label="Configurações" title="Configurações" onclick="openSettings()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
     <div class="xp-bar-wrap"><div class="xp-bar-fill" id="footer-xp-bar" style="width:0%"></div></div>
     <div class="footer-xp-row">
       <span id="footer-xp-cur">0 XP</span>
@@ -541,12 +702,14 @@
     <div class="nav-tab active" data-tab="overview" role="tab" tabindex="0" aria-selected="true" onclick="showTab('overview')" onkeydown="navKey(event,'overview')">Visão Geral</div>
     <div class="nav-tab" data-tab="analises" role="tab" tabindex="0" aria-selected="false" onclick="showTab('analises')" onkeydown="navKey(event,'analises')">Análises</div>
     <div class="nav-tab" data-tab="provas" role="tab" tabindex="0" aria-selected="false" onclick="showTab('provas')" onkeydown="navKey(event,'provas')">Provas</div>
+    <div class="nav-tab" data-tab="direcionamento" role="tab" tabindex="0" aria-selected="false" onclick="showTab('direcionamento')" onkeydown="navKey(event,'direcionamento')">Direcionamento</div>
     <div class="nav-tab" data-tab="objetivos" role="tab" tabindex="0" aria-selected="false" onclick="showTab('objetivos')" onkeydown="navKey(event,'objetivos')">Objetivos</div>
   </nav>
   <div id="content">
     <div id="tab-overview"></div>
     <div id="tab-analises" class="hidden"></div>
     <div id="tab-provas" class="hidden"></div>
+    <div id="tab-direcionamento" class="hidden"></div>
     <div id="tab-objetivos" class="hidden"></div>
   </div>
 </div>
@@ -605,9 +768,12 @@
         <input type="color" id="disc-cor-hidden" value="#3b82f6" oninput="onCustomColor(this.value)">
       </div>
     </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('modal-disc')">Cancelar</button>
-      <button class="btn-save" onclick="saveDisc()">Salvar</button>
+    <div class="modal-actions" style="justify-content:space-between">
+      <button class="btn-danger hidden" id="disc-delete-btn" onclick="deleteCurrentDisc()">Excluir disciplina</button>
+      <div style="display:flex;gap:10px;margin-left:auto">
+        <button class="btn-cancel" onclick="closeModal('modal-disc')">Cancelar</button>
+        <button class="btn-save" onclick="saveDisc()">Salvar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -639,9 +805,53 @@
       </div>
     </div>
 
+    <div class="form-group">
+      <label class="form-label">Cor de fundo</label>
+      <div class="color-swatches" id="bg-swatches"></div>
+      <div class="color-custom-row">
+        <div class="color-custom-preview" id="bg-custom-preview" onclick="document.getElementById('bg-cor-hidden').click()" title="Cor de fundo personalizada"></div>
+        <span style="font-size:11px;color:var(--text-muted)">Cor personalizada</span>
+        <input type="color" id="bg-cor-hidden" value="#0a0d1a" oninput="onBgColor(this.value)">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Imagem de fundo</label>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="btn-outline" onclick="document.getElementById('bg-image-input').click()">Escolher imagem…</button>
+        <button class="btn-danger hidden" id="bg-remove-img" onclick="removeBgImage()">Remover imagem</button>
+        <input type="file" id="bg-image-input" accept="image/*" class="hidden" onchange="onBgImagePick(event)">
+      </div>
+      <p style="font-size:10px;color:var(--text-muted);margin-top:6px">A imagem recebe um escurecimento automático para manter o texto legível.</p>
+    </div>
+
     <div class="modal-actions">
       <button class="btn-cancel" onclick="restoreAccent()">Restaurar padrão</button>
       <button class="btn-save" onclick="closeModal('modal-appearance')">Concluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="modal-settings" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>Configurações</h2>
+    <p class="modal-sub">Seu nome, objetivo principal e a contagem regressiva exibida na Visão Geral.</p>
+    <div class="form-group">
+      <label class="form-label">Seu nome</label>
+      <input class="form-input" id="set-username" placeholder="Ex: Nicollas">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Objetivo principal</label>
+      <input class="form-input" id="set-target-nome" placeholder="Ex: Medicina USP Pinheiros (FMUSP)">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Data do objetivo (para "Dias Restantes")</label>
+      <input class="form-input" id="set-target-data" type="date">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('modal-settings')">Cancelar</button>
+      <button class="btn-save" onclick="saveSettings()">Salvar</button>
     </div>
   </div>
 </div>
@@ -682,15 +892,33 @@ const DEFAULT_PROVAS = [];
 // ─── STATE ──────────────────────────────────────────────────────────────────
 
 function loadState() {
+  let s = null;
   try {
-    const s = localStorage.getItem('studyos_v3');
-    if (s) return JSON.parse(s);
+    const raw = localStorage.getItem('studyos_v3');
+    if (raw) s = JSON.parse(raw);
   } catch(e) {}
-  return { discs: DEFAULT_DISCS, provas: DEFAULT_PROVAS, username: 'Você' };
+  if (!s) s = { discs: DEFAULT_DISCS, provas: DEFAULT_PROVAS, username: 'Você' };
+  return normalizeState(s);
+}
+
+// Garante que estados salvos antigos ganhem os campos novos sem quebrar.
+function normalizeState(s) {
+  s.discs = (s.discs || []).map(d => ({ focusSeconds: 0, ...d }));
+  s.provas = s.provas || [];
+  s.username = s.username || 'Você';
+  s.sessions = s.sessions || [];               // {id, discId, type, seconds, date}
+  s.profile = s.profile || { avatar: null };   // dataURL da foto de perfil
+  s.theme = s.theme || {};
+  s.theme.accent = s.theme.accent || '#06b6d4';
+  s.theme.bg = s.theme.bg || 'deep';           // chave de preset OU cor hex
+  s.theme.bgImage = s.theme.bgImage || null;   // dataURL opcional
+  s.target = s.target || { nome: 'Meu Objetivo', data: '' };
+  return s;
 }
 
 function saveState() {
-  localStorage.setItem('studyos_v3', JSON.stringify(state));
+  try { localStorage.setItem('studyos_v3', JSON.stringify(state)); }
+  catch(e) { showToast('Armazenamento cheio — remova uma imagem de fundo grande.'); }
 }
 
 let state = loadState();
@@ -752,6 +980,49 @@ function tipoMulti(tipo) {
 
 function uid() { return Math.random().toString(36).slice(2); }
 
+// ─── FOCO / SESSÕES ───────────────────────────────────────────────────────────
+
+function fmtHMS(sec) {
+  const h = String(Math.floor(sec/3600)).padStart(2,'0');
+  const m = String(Math.floor(sec%3600/60)).padStart(2,'0');
+  const s = String(Math.floor(sec%60)).padStart(2,'0');
+  return `${h}:${m}:${s}`;
+}
+function fmtClock(sec) {
+  const m = String(Math.floor(sec/60)).padStart(2,'0');
+  const s = String(Math.floor(sec%60)).padStart(2,'0');
+  return `${m}:${s}`;
+}
+function discFocusSeconds(id) {
+  return state.sessions.filter(s => s.discId === id).reduce((a,s) => a + (s.seconds||0), 0);
+}
+function totalFocusSeconds() {
+  return state.sessions.reduce((a,s) => a + (s.seconds||0), 0);
+}
+function fmtHours(sec) {
+  const h = sec / 3600;
+  return h >= 10 ? Math.round(h) + 'h' : (Math.round(h*10)/10) + 'h';
+}
+// Streak: dias consecutivos (terminando hoje ou ontem) com ao menos uma sessão.
+function focusStreak() {
+  const days = new Set(state.sessions.map(s => (s.date||'').slice(0,10)));
+  if (!days.size) return 0;
+  let streak = 0;
+  const d = new Date();
+  // permite que a sequência conte se houve foco ontem (ainda não estudou hoje)
+  if (!days.has(fmt(d))) d.setDate(d.getDate() - 1);
+  while (days.has(fmt(d))) { streak++; d.setDate(d.getDate() - 1); }
+  return streak;
+}
+const TYPE_LABEL = { pratica:'Prática', teoria:'Teoria', revisao:'Revisão', leitura:'Leitura' };
+function daysUntil(dateStr) {
+  if (!dateStr) return null;
+  const target = new Date(dateStr + 'T00:00:00');
+  if (isNaN(target)) return null;
+  const today = new Date(); today.setHours(0,0,0,0);
+  return Math.ceil((target - today) / 86400000);
+}
+
 // ─── TOAST ──────────────────────────────────────────────────────────────────
 
 function showToast(msg) {
@@ -807,13 +1078,45 @@ const ACCENT_PRESETS = [
   { val:'#14b8a6', nome:'Turquesa' },
 ];
 
+const BG_PRESETS = [
+  { key:'deep',   nome:'Abissal',  color:'#0a0d1a' },
+  { key:'black',  nome:'OLED',     color:'#000000' },
+  { key:'navy',   nome:'Marinho',  color:'#0b1226' },
+  { key:'slate',  nome:'Ardósia',  color:'#0d1117' },
+  { key:'plum',   nome:'Ameixa',   color:'#130a1c' },
+  { key:'forest', nome:'Floresta', color:'#0a1410' },
+  { key:'wine',   nome:'Vinho',    color:'#170a0f' },
+  { key:'espresso', nome:'Café',   color:'#140f0a' },
+];
+
 function getAccent() { return (state.theme && state.theme.accent) || DEFAULT_ACCENT; }
+function bgColor() {
+  const bg = state.theme && state.theme.bg;
+  if (bg && bg[0] === '#') return bg;
+  const p = BG_PRESETS.find(p => p.key === bg);
+  return p ? p.color : '#0a0d1a';
+}
+function hexToRgba(hex, a) {
+  const h = hex.replace('#','');
+  const n = parseInt(h.length===3 ? h.split('').map(c=>c+c).join('') : h, 16);
+  return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`;
+}
 
 function applyTheme() {
   const a = getAccent();
   const root = document.documentElement;
   root.style.setProperty('--accent-cyan', a);
   root.style.setProperty('--accent-blue', a);
+  const c = bgColor();
+  root.style.setProperty('--bg-deep', c);
+  const img = state.theme && state.theme.bgImage;
+  if (img) {
+    document.body.style.background = `linear-gradient(${hexToRgba(c,.80)}, ${hexToRgba(c,.94)}), url("${img}") center/cover fixed no-repeat`;
+  } else {
+    document.body.style.background = c;
+  }
+  const meta = document.querySelector('meta[name=theme-color]');
+  if (meta) meta.setAttribute('content', c);
 }
 
 function setAccent(color) {
@@ -851,15 +1154,143 @@ function renderAccentSwatches() {
   if (hidden) hidden.value = cur;
 }
 
+// ── background ──
+function setBg(key) {
+  state.theme = state.theme || {};
+  state.theme.bg = key;
+  saveState(); applyTheme(); renderBgSwatches();
+}
+function onBgColor(color) { setBg(color); }
+function removeBgImage() {
+  state.theme.bgImage = null;
+  saveState(); applyTheme(); renderBgSwatches();
+}
+function onBgImagePick(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  downscaleImage(file, 1280, 0.72, (dataUrl) => {
+    state.theme = state.theme || {};
+    state.theme.bgImage = dataUrl;
+    saveState(); applyTheme(); renderBgSwatches();
+    showToast('Imagem de fundo aplicada.');
+  });
+  e.target.value = '';
+}
+function renderBgSwatches() {
+  const cur = (state.theme && state.theme.bg) || 'deep';
+  const el = document.getElementById('bg-swatches');
+  if (!el) return;
+  el.innerHTML = BG_PRESETS.map(p => `
+    <div class="color-swatch ${cur===p.key?'active':''}"
+      style="background:${p.color};border:1px solid #2a3550" title="${p.nome}" role="button" tabindex="0"
+      aria-label="Fundo ${p.nome}" aria-pressed="${cur===p.key}"
+      onclick="setBg('${p.key}')"
+      onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setBg('${p.key}')}">
+    </div>
+  `).join('');
+  const cp = document.getElementById('bg-custom-preview');
+  if (cp) cp.style.background = bgColor();
+  const rm = document.getElementById('bg-remove-img');
+  if (rm) rm.classList.toggle('hidden', !(state.theme && state.theme.bgImage));
+}
+
 function openAppearance() {
   renderAccentSwatches();
+  renderBgSwatches();
   document.getElementById('modal-appearance').classList.remove('hidden');
+}
+
+// ─── PROFILE / AVATAR ─────────────────────────────────────────────────────────
+
+// Reduz a imagem para um quadrado e devolve dataURL (poupa o localStorage).
+function downscaleImage(file, maxSize, quality, cb, square) {
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      let { width:w, height:h } = img;
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (square) {
+        const s = Math.min(w, h);
+        canvas.width = canvas.height = Math.min(maxSize, s);
+        const sx = (w - s) / 2, sy = (h - s) / 2;
+        ctx.drawImage(img, sx, sy, s, s, 0, 0, canvas.width, canvas.height);
+      } else {
+        const scale = Math.min(1, maxSize / Math.max(w, h));
+        canvas.width = Math.round(w * scale);
+        canvas.height = Math.round(h * scale);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      }
+      cb(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function onAvatarPick(e) {
+  const file = e.target.files && e.target.files[0];
+  if (!file) return;
+  downscaleImage(file, 256, 0.85, (dataUrl) => {
+    state.profile = state.profile || {};
+    state.profile.avatar = dataUrl;
+    saveState(); renderAvatar(); render();
+    showToast('Foto de perfil atualizada!');
+  }, true);
+  e.target.value = '';
+}
+
+function avatarStyle() {
+  const a = state.profile && state.profile.avatar;
+  return a ? `background-image:url("${a}")` : '';
+}
+function avatarInitial() {
+  const a = state.profile && state.profile.avatar;
+  if (a) return '';
+  return (state.username || 'V').trim().charAt(0).toUpperCase();
+}
+function renderAvatar() {
+  const el = document.getElementById('footer-avatar');
+  if (!el) return;
+  el.style.cssText = avatarStyle();
+  el.textContent = avatarInitial();
+}
+
+// ─── SETTINGS ─────────────────────────────────────────────────────────────────
+
+function openSettings() {
+  document.getElementById('set-username').value = state.username || '';
+  document.getElementById('set-target-nome').value = state.target?.nome || '';
+  document.getElementById('set-target-data').value = state.target?.data || '';
+  document.getElementById('modal-settings').classList.remove('hidden');
+}
+function saveSettings() {
+  const u = document.getElementById('set-username').value.trim() || 'Você';
+  state.username = u;
+  state.target = {
+    nome: document.getElementById('set-target-nome').value.trim() || 'Meu Objetivo',
+    data: document.getElementById('set-target-data').value || ''
+  };
+  saveState();
+  closeModal('modal-settings');
+  renderAvatar(); render();
+  showToast('Configurações salvas!');
 }
 
 // ─── ZONE IN ────────────────────────────────────────────────────────────────
 
 let ziStep = 1, ziDisc = null, ziType = null;
 let timerInterval = null, timerSeconds = 0, timerPaused = false;
+// estado da sessão de foco
+let ziExercises = [], ziDuvidas = [], ziPendencias = [];
+let ziPerQ = 180, ziGoalCount = 5;
+const WARM_PHASES = [
+  { at: 0,    label: 'Aquecendo',  next: 300 },
+  { at: 300,  label: 'Em fluxo',   next: 1500 },
+  { at: 1500, label: 'Foco profundo', next: 3000 },
+  { at: 3000, label: 'Imersão total', next: null },
+];
 
 const SVG = (paths) => `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
 const STUDY_TYPES = [
@@ -885,6 +1316,7 @@ function closeZoneIn() {
 
 function renderZoneIn() {
   const el = document.getElementById('zonein-content');
+  el.classList.toggle('zi-session', ziStep === 3);
   if (ziStep === 1) {
     const discGrid = state.discs.map(d => `
       <div class="zonein-option ${ziDisc===d.id?'selected':''}" onclick="ziSelectDisc('${d.id}')">
@@ -924,35 +1356,7 @@ function renderZoneIn() {
       <br><button class="btn-zonein-back" onclick="ziBack()">← Voltar</button>
     `;
   } else if (ziStep === 3) {
-    const disc = getDiscById(ziDisc);
-    const typeLabel = STUDY_TYPES.find(t=>t.id===ziType)?.label || '';
-    el.innerHTML = `
-      <div class="zonein-dots">
-        <div class="zonein-dot active"></div>
-        <div class="zonein-dot active"></div>
-        <div class="zonein-dot active"></div>
-      </div>
-      <div class="timer-disc-name" style="color:${disc?.cor||'#fff'}">${disc?.nome||''}</div>
-      <div class="timer-type-badge">${typeLabel}</div>
-      <div class="timer-display" id="zi-timer">00:00:00</div>
-      <div class="timer-label">em andamento</div>
-      <div class="timer-actions">
-        <button class="btn-timer-pause" id="zi-pause-btn" onclick="ziTogglePause()">Pausar</button>
-        <button class="btn-timer-end" onclick="ziFinish()">Finalizar Sessão</button>
-      </div>
-    `;
-    timerSeconds = 0; timerPaused = false;
-    if (timerInterval) clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      if (!timerPaused) {
-        timerSeconds++;
-        const h = String(Math.floor(timerSeconds/3600)).padStart(2,'0');
-        const m = String(Math.floor(timerSeconds%3600/60)).padStart(2,'0');
-        const s = String(timerSeconds%60).padStart(2,'0');
-        const el = document.getElementById('zi-timer');
-        if (el) el.textContent = `${h}:${m}:${s}`;
-      }
-    }, 1000);
+    ziStartSession();
   }
 }
 
@@ -960,6 +1364,164 @@ function ziSelectDisc(id) { ziDisc = id; renderZoneIn(); }
 function ziSelectType(id) { ziType = id; renderZoneIn(); }
 function ziNext() { ziStep++; renderZoneIn(); }
 function ziBack() { ziStep--; renderZoneIn(); }
+
+// ── SESSÃO DE FOCO ──
+function newExercise(i) { return { id: uid(), nome: `Exercício ${i}`, feito:false, dissecado:false, pendencia:false, nota:'', seconds:0 }; }
+
+function ziStartSession() {
+  const disc = getDiscById(ziDisc);
+  const typeLabel = TYPE_LABEL[ziType] || '';
+  ziExercises = Array.from({length: ziGoalCount}, (_,i) => newExercise(i+1));
+  ziDuvidas = []; ziPendencias = [];
+  timerSeconds = 0; timerPaused = false;
+  const el = document.getElementById('zonein-content');
+  el.innerHTML = `
+    <div class="zi-session-wrap">
+      <div class="zi-main">
+        <div class="zi-topbar">
+          <div class="zi-quick">
+            <span class="zi-quick-label">DÚVIDA</span>
+            <input id="zi-duvida" placeholder="Anotar dúvida e pressionar Enter…" onkeydown="ziQuickAdd(event,'duvida')">
+          </div>
+          <div class="zi-disc-chip" style="background:${hexToRgba(disc?.cor||'#888',.16)};color:${disc?.cor||'#fff'}">
+            <span class="disc-dot" style="background:${disc?.cor||'#888'}"></span>${disc?.nome||''}
+          </div>
+          <div class="zi-quick">
+            <span class="zi-quick-label">PENDÊNCIA</span>
+            <input id="zi-pendencia" placeholder="Anotar pendência e pressionar Enter…" onkeydown="ziQuickAdd(event,'pendencia')">
+          </div>
+        </div>
+
+        <div class="zi-center">
+          <div class="zi-timer-big" id="zi-timer">00:00:00</div>
+          <div class="zi-timer-cap">Tempo de Foco</div>
+          <div class="zi-meta-label">Meta da Sessão</div>
+          <div class="zi-meta-title">${disc?.nome||''} — ${typeLabel}</div>
+          <div class="zi-meta-sub">Resolver e dissecar ${ziGoalCount} exercício(s) · ${Math.round(ziPerQ/60)}min/q</div>
+        </div>
+
+        <div class="zi-warm">
+          <div class="zi-warm-label" id="zi-warm-label">Aquecendo</div>
+          <div class="zi-warm-sub" id="zi-warm-sub">05:00 para evoluir</div>
+          <div class="zi-warm-bar"><div class="zi-warm-fill" id="zi-warm-fill" style="width:0%"></div></div>
+        </div>
+
+        <div class="zi-foot">
+          <div class="zi-foot-meta">${disc?.nome||''} · ${typeLabel} · Livre</div>
+          <button class="btn-timer-pause" id="zi-pause-btn" onclick="ziTogglePause()">Pausar</button>
+          <button class="btn-timer-end" onclick="ziFinish()">Encerrar Sessão</button>
+        </div>
+      </div>
+
+      <div class="zi-panel">
+        <div class="zi-panel-head">
+          <span class="zi-panel-title">Lista de Exercícios</span>
+          <span class="zi-ring" id="zi-ring">0%</span>
+        </div>
+        <div class="zi-bateria">⚡ BATERIA ATIVA · ${Math.round(ziPerQ/60)}MIN/QUESTÃO</div>
+        <div class="zi-ex-list" id="zi-ex-list"></div>
+        <div class="zi-add-ex" onclick="ziAddExercise()">+ Adicionar exercício</div>
+        <div class="zi-log" id="zi-log"></div>
+      </div>
+    </div>
+  `;
+  renderExercises();
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(ziTick, 1000);
+}
+
+function ziActiveIndex() { return ziExercises.findIndex(e => !e.feito); }
+
+function ziTick() {
+  if (timerPaused) return;
+  timerSeconds++;
+  const t = document.getElementById('zi-timer');
+  if (t) t.textContent = fmtHMS(timerSeconds);
+  // cronômetro do exercício ativo
+  const ai = ziActiveIndex();
+  if (ai >= 0) {
+    ziExercises[ai].seconds++;
+    const tm = document.getElementById(`zi-ex-timer-${ziExercises[ai].id}`);
+    if (tm) {
+      const ex = ziExercises[ai];
+      const exceeded = ex.seconds > ziPerQ;
+      tm.classList.toggle('exceeded', exceeded);
+      tm.innerHTML = `<b>${fmtClock(ex.seconds)}</b> / ${Math.round(ziPerQ/60)}min`;
+    }
+  }
+  // aquecimento
+  const phase = [...WARM_PHASES].reverse().find(p => timerSeconds >= p.at) || WARM_PHASES[0];
+  const lbl = document.getElementById('zi-warm-label');
+  const sub = document.getElementById('zi-warm-sub');
+  const fill = document.getElementById('zi-warm-fill');
+  if (lbl) lbl.textContent = phase.label;
+  if (phase.next) {
+    const span = phase.next - phase.at;
+    const into = timerSeconds - phase.at;
+    if (sub) sub.textContent = `${fmtClock(Math.max(0, phase.next - timerSeconds))} para evoluir`;
+    if (fill) fill.style.width = Math.min(100, into/span*100) + '%';
+  } else {
+    if (sub) sub.textContent = 'nível máximo';
+    if (fill) fill.style.width = '100%';
+  }
+}
+
+function renderExercises() {
+  const el = document.getElementById('zi-ex-list');
+  if (!el) return;
+  const ai = ziActiveIndex();
+  el.innerHTML = ziExercises.map((ex,i) => `
+    <div class="zi-ex ${i===ai?'active':''} ${ex.feito?'done':''}">
+      <div class="zi-ex-top">
+        <span class="zi-ex-name">${ex.nome}</span>
+        <button class="zi-chip ${ex.feito?'on-feito':''}" onclick="ziToggleEx('${ex.id}','feito')">✓ Feito</button>
+        <button class="zi-chip ${ex.dissecado?'on-diss':''}" onclick="ziToggleEx('${ex.id}','dissecado')">⌕ Dissecado</button>
+        <button class="zi-chip ${ex.pendencia?'on-pend':''}" onclick="ziToggleEx('${ex.id}','pendencia')">⚠ Pendência</button>
+      </div>
+      ${i===ai ? `<div class="zi-ex-timer" id="zi-ex-timer-${ex.id}"><b>${fmtClock(ex.seconds)}</b> / ${Math.round(ziPerQ/60)}min</div>` : ''}
+      <input class="zi-ex-note" placeholder="Anotação rápida (ex: errei fórmula X)…" value="${(ex.nota||'').replace(/"/g,'&quot;')}" onchange="ziSetNote('${ex.id}', this.value)">
+    </div>
+  `).join('');
+  const feitos = ziExercises.filter(e=>e.feito).length;
+  const ring = document.getElementById('zi-ring');
+  if (ring) ring.textContent = Math.round(feitos/Math.max(1,ziExercises.length)*100) + '%';
+  renderZiLog();
+}
+
+function renderZiLog() {
+  const el = document.getElementById('zi-log');
+  if (!el) return;
+  const done = ziExercises.filter(e => e.feito);
+  if (!done.length) { el.innerHTML = `<div class="zi-log-title">Registro de Tempo</div><div style="font-size:11px;color:var(--text-muted)">Marque exercícios como feitos para registrar o tempo.</div>`; return; }
+  el.innerHTML = `<div class="zi-log-title">Registro de Tempo</div>` + done.map(ex => {
+    const ok = ex.seconds <= ziPerQ;
+    return `<div class="zi-log-row"><span class="ln">${ex.nome}</span><span>${fmtClock(ex.seconds)}</span><span class="zi-log-tag ${ok?'ok':'bad'}">${ok?'No Tempo':'Excedido'}</span></div>`;
+  }).join('');
+}
+
+function ziToggleEx(id, field) {
+  const ex = ziExercises.find(e => e.id === id);
+  if (!ex) return;
+  ex[field] = !ex[field];
+  if (field === 'feito' && ex.feito && ex.pendencia) ex.pendencia = false;
+  renderExercises();
+}
+function ziSetNote(id, val) {
+  const ex = ziExercises.find(e => e.id === id);
+  if (ex) ex.nota = val;
+}
+function ziAddExercise() {
+  ziExercises.push(newExercise(ziExercises.length + 1));
+  renderExercises();
+}
+function ziQuickAdd(e, kind) {
+  if (e.key !== 'Enter') return;
+  const v = e.target.value.trim();
+  if (!v) return;
+  (kind === 'duvida' ? ziDuvidas : ziPendencias).push(v);
+  e.target.value = '';
+  showToast(kind === 'duvida' ? 'Dúvida anotada.' : 'Pendência anotada.');
+}
 
 function ziTogglePause() {
   timerPaused = !timerPaused;
@@ -970,12 +1532,25 @@ function ziTogglePause() {
 function ziFinish() {
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = null;
-  const h = String(Math.floor(timerSeconds/3600)).padStart(2,'0');
-  const m = String(Math.floor(timerSeconds%3600/60)).padStart(2,'0');
-  const s = String(timerSeconds%60).padStart(2,'0');
   const disc = getDiscById(ziDisc);
+  const feitos = ziExercises.filter(e => e.feito).length;
+  if (timerSeconds < 5) { closeZoneIn(); return; } // ignora sessões acidentais
+  // registra a sessão
+  state.sessions.unshift({
+    id: uid(), discId: ziDisc, type: ziType, seconds: timerSeconds,
+    date: new Date().toISOString(),
+    exercicios: feitos,
+    duvidas: ziDuvidas.length, pendencias: ziPendencias.length,
+  });
+  // tempo de foco e XP por foco (2 XP por minuto)
+  if (disc) {
+    disc.focusSeconds = (disc.focusSeconds || 0) + timerSeconds;
+    disc.xp += Math.round(timerSeconds / 60 * 2);
+  }
+  saveState();
   closeZoneIn();
-  showToast(`Sessão de ${h}:${m}:${s} em ${disc?.nome||''} finalizada!`);
+  render();
+  showToast(`Sessão de ${fmtHMS(timerSeconds)} em ${disc?.nome||''} registrada · +${Math.round(timerSeconds/60*2)} XP`);
 }
 
 // ─── ADD DISC MODAL ─────────────────────────────────────────────────────────
@@ -1020,6 +1595,7 @@ function openAddDisc(discId) {
     currentDiscColor = DISC_COLORS[state.discs.length % DISC_COLORS.length];
   }
   document.getElementById('disc-cor-hidden').value = currentDiscColor;
+  document.getElementById('disc-delete-btn').classList.toggle('hidden', !discId);
   renderColorSwatches();
   modal.classList.remove('hidden');
 }
@@ -1031,15 +1607,23 @@ function saveDisc() {
     const d = getDiscById(editingDiscId);
     d.nome = nome; d.cor = currentDiscColor;
   } else {
-    state.discs.push({ id: uid(), nome, cor: currentDiscColor, xp: 0 });
+    state.discs.push({ id: uid(), nome, cor: currentDiscColor, xp: 0, focusSeconds: 0 });
   }
   saveState(); closeModal('modal-disc'); render(); showToast('Disciplina salva!');
 }
 
+function deleteCurrentDisc() {
+  if (editingDiscId) deleteDisc(editingDiscId);
+}
+
 function deleteDisc(id) {
-  if (!confirm('Excluir esta disciplina?')) return;
+  const d = getDiscById(id);
+  if (!confirm(`Excluir "${d?.nome||'esta disciplina'}"? As provas e sessões registradas nela serão mantidas, mas ela some das listas.`)) return;
   state.discs = state.discs.filter(d => d.id !== id);
-  saveState(); render();
+  saveState();
+  closeModal('modal-disc');
+  render();
+  showToast('Disciplina excluída.');
 }
 
 // ─── ADD PROVA MODAL ─────────────────────────────────────────────────────────
@@ -1248,7 +1832,7 @@ let currentTab = 'overview';
 
 function navKey(e, tab) {
   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showTab(tab); return; }
-  const tabs = ['overview','analises','provas','objetivos'];
+  const tabs = ['overview','analises','provas','direcionamento','objetivos'];
   let i = tabs.indexOf(currentTab);
   if (e.key === 'ArrowRight') i = (i + 1) % tabs.length;
   else if (e.key === 'ArrowLeft') i = (i - 1 + tabs.length) % tabs.length;
@@ -1265,7 +1849,7 @@ function showTab(tab) {
     t.classList.toggle('active', on);
     t.setAttribute('aria-selected', String(on));
   });
-  ['overview','analises','provas','objetivos'].forEach(t => {
+  ['overview','analises','provas','direcionamento','objetivos'].forEach(t => {
     document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
   });
   renderTab(tab);
@@ -1277,113 +1861,175 @@ function renderTab(tab) {
   if (tab === 'overview') renderOverview();
   else if (tab === 'analises') renderAnalises();
   else if (tab === 'provas') renderProvas();
+  else if (tab === 'direcionamento') renderDirecionamento();
   else if (tab === 'objetivos') renderObjetivos();
 }
 
 // ─── OVERVIEW ────────────────────────────────────────────────────────────────
 
+// ─── CONQUISTAS ────────────────────────────────────────────────────────────
+function bestStreak() {
+  const days = [...new Set(state.sessions.map(s => (s.date||'').slice(0,10)))].filter(Boolean).sort();
+  let best = 0, cur = 0, prev = null;
+  for (const day of days) {
+    if (prev && (new Date(day) - new Date(prev)) === 86400000) cur++;
+    else cur = 1;
+    best = Math.max(best, cur); prev = day;
+  }
+  return best;
+}
+const MEDAL = {
+  hourglass: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12M6 22h12M6 2c0 5 6 6 6 10S6 17 6 22M18 2c0 5-6 6-6 10s6 5 6 10"/></svg>',
+  flame: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-1 .5-2 .5-2S6 9 6 13a6 6 0 0 0 12 0c0-5-6-11-6-11z"/></svg>',
+  trophy: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3"/></svg>',
+};
+function computeAchievements() {
+  const maxMin = state.sessions.length ? Math.max(...state.sessions.map(s => s.seconds/60)) : 0;
+  const streak = bestStreak();
+  const bestP = state.provas.length ? Math.max(...state.provas.map(provaPct)) : 0;
+  return [
+    { cat:'Tempo de Foco', icon:MEDAL.hourglass, items:[20,40,60,80,100].map(m => ({ label:`${m} Minutos`, unlocked: maxMin >= m })) },
+    { cat:'Constância',    icon:MEDAL.flame,     items:[ [10,'10 Dias'],[25,'25 Dias'],[40,'40 Dias'],[60,'60 Dias'],[100,'100 Dias'] ].map(([d,l]) => ({ label:l, unlocked: streak >= d })) },
+    { cat:'Performance',   icon:MEDAL.trophy,    items:[ [65,'Rendimento Sólido'],[75,'Aproveitamento Avançado'],[85,'Zona de Aprovação'],[90,'Alta Performance'],[100,'Gabarito / Perfeição'] ].map(([p,l]) => ({ label:l, unlocked: bestP >= p })) },
+  ];
+}
+
+// ─── WIDGETS ARRASTÁVEIS ─────────────────────────────────────────────────────
+const DEFAULT_LAYOUT = ['countdown','stats','charts','historico','conquistas','disciplinas','provas'];
+function getLayout() {
+  let l = (state.layout && state.layout.length) ? state.layout.slice() : DEFAULT_LAYOUT.slice();
+  DEFAULT_LAYOUT.forEach(w => { if (!l.includes(w)) l.push(w); });
+  return l.filter(w => DEFAULT_LAYOUT.includes(w));
+}
+let dragWid = null;
+function onWidgetDragStart(e, wid) { dragWid = wid; e.dataTransfer.effectAllowed = 'move'; e.currentTarget.classList.add('dragging'); }
+function onWidgetDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function onWidgetDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function onWidgetDragEnd(e) { document.querySelectorAll('.widget').forEach(w => w.classList.remove('dragging','drag-over')); }
+function onWidgetDrop(e, targetWid) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (!dragWid || dragWid === targetWid) return;
+  const l = getLayout();
+  l.splice(l.indexOf(dragWid), 1);
+  l.splice(l.indexOf(targetWid), 0, dragWid);
+  state.layout = l; saveState(); dragWid = null;
+  renderOverview();
+}
+function resetLayout() { state.layout = DEFAULT_LAYOUT.slice(); saveState(); renderOverview(); showToast('Layout restaurado.'); }
+
+const GRIP = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>';
+function widget(wid, html) {
+  return `<section class="widget" data-wid="${wid}" draggable="true"
+    ondragstart="onWidgetDragStart(event,'${wid}')" ondragover="onWidgetDragOver(event)"
+    ondragleave="onWidgetDragLeave(event)" ondrop="onWidgetDrop(event,'${wid}')" ondragend="onWidgetDragEnd(event)">
+    <span class="drag-handle" title="Arraste para mover">${GRIP}</span>${html}</section>`;
+}
+
+function avatarMiniHTML() {
+  const a = state.profile && state.profile.avatar;
+  return `<span class="avatar avatar-xs" style="${a?`background-image:url('${a}')`:''}">${a?'':avatarInitial()}</span>`;
+}
+
 function renderOverview() {
   const el = document.getElementById('tab-overview');
   const total = totalXP();
   const glv = getLevel(total);
-  const recent3 = state.provas.slice(0,3);
 
-  const discCardsHTML = state.discs.map(d => {
-    const lv = getLevel(d.xp);
-    return `
-      <div class="disc-card" ondblclick="openAddDisc('${d.id}')">
-        <div class="disc-card-top">
-          <span class="disc-dot" style="background:${d.cor}"></span>
-          <span class="disc-card-name">${d.nome}</span>
-        </div>
-        <div class="disc-card-level">Nível <b>${lv.level}</b></div>
-        <div class="prog-bar"><div class="prog-fill" style="background:${d.cor};width:${lv.pct}%"></div></div>
-        <div class="disc-xp-row" style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-muted);margin-top:4px">
-          <span>${d.xp} XP</span>
-          <span>${lv.current}/${lv.needed} p/ Nv. ${lv.level+1}</span>
-        </div>
-      </div>
-    `;
-  }).join('');
+  // ── conteúdo de cada widget ──
+  const W = {};
 
-  const recentHTML = recent3.map(p => {
-    const pp = provaPct(p);
-    return `
-      <div class="prova-card" style="flex:1;min-width:220px">
-        <div class="prova-header">
-          <div><div class="prova-name">${p.nome}</div><div class="prova-date">${formatDate(p.data)}</div></div>
-          <div class="prova-pct ${pctClass(pp)}">${pp}%</div>
-        </div>
-        ${p.disciplinas.slice(0,3).map(r => {
-          const disc = getDiscById(r.id);
-          const pp2 = pct(r.acertos, r.total);
-          return `
-            <div class="prova-disc-row">
-              <div class="prova-disc-name">
-                <span class="disc-dot" style="background:${disc?.cor||'#888'}"></span>
-                ${disc?.nome||r.id}
-              </div>
-              <div style="display:flex;gap:10px;align-items:center">
-                <span class="prova-disc-score">${r.acertos}/${r.total}</span>
-                <span class="prova-disc-pct" style="color:${pctColor(pp2)}">${pp2}%</span>
-              </div>
+  const dias = daysUntil(state.target && state.target.data);
+  W.countdown = `<div class="countdown">${
+    dias === null
+      ? `<div class="countdown-label">Objetivo Principal</div>
+         <div class="countdown-target">${state.target?.nome || 'Defina seu objetivo'}</div>
+         <div style="font-size:11px;color:var(--text-muted);margin-top:10px">Defina a data em <a onclick="openSettings()" style="color:var(--accent-cyan);cursor:pointer;text-decoration:underline">Configurações</a> para ver a contagem regressiva.</div>`
+      : `<div class="countdown-label">Dias Restantes</div>
+         <div class="countdown-num">${dias < 0 ? 0 : dias}</div>
+         <div class="countdown-target">${state.target?.nome || ''}</div>`
+  }</div>`;
+
+  W.stats = `
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px">
+      <div class="stat-box"><div class="stat-box-label">Sessões</div><div class="stat-box-val">${state.sessions.length}</div><div class="stat-box-sub">de foco</div></div>
+      <div class="stat-box"><div class="stat-box-label">Horas Totais</div><div class="stat-box-val" style="color:var(--accent-cyan)">${fmtHours(totalFocusSeconds())}</div><div class="stat-box-sub">em foco</div></div>
+      <div class="stat-box"><div class="stat-box-label">Streak</div><div class="stat-box-val" style="color:var(--yellow)">${focusStreak()}</div><div class="stat-box-sub">dias seguidos</div></div>
+      <div class="stat-box"><div class="stat-box-label">XP · Nível</div><div class="stat-box-val" style="color:var(--green)">${glv.level}</div><div class="stat-box-sub">${total.toLocaleString()} XP total</div></div>
+    </div>`;
+
+  W.charts = `
+    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:16px;margin-bottom:24px">
+      <div class="card"><div class="section-label">Radar de Desempenho</div>${buildRadar(state.discs, state.provas)}</div>
+      <div class="card"><div class="section-label">Evolução de Aproveitamento</div>${buildLineChart(state.provas)}</div>
+    </div>`;
+
+  const recentSessions = state.sessions.slice(0, 6);
+  W.historico = `
+    <div class="section-label">Histórico Recente</div>
+    <div style="margin-bottom:24px">${
+      recentSessions.length
+        ? recentSessions.map(s => {
+            const d = getDiscById(s.discId);
+            return `<div class="hist-row">
+              ${avatarMiniHTML()}
+              <span class="hist-name" style="color:${d?.cor||'#fff'}">${d?.nome || 'Disciplina'}</span>
+              <span class="hist-spacer"></span>
+              <span class="hist-type">${TYPE_LABEL[s.type] || ''}</span>
+              <span class="hist-time">${fmtHMS(s.seconds)}</span>
             </div>`;
+          }).join('')
+        : `<div class="card" style="text-align:center;color:var(--text-muted);font-size:13px;padding:28px">Nenhuma sessão ainda. Clique em <b style="color:var(--accent-cyan)">Zone In</b> para iniciar seu primeiro foco.</div>`
+    }</div>`;
+
+  const ach = computeAchievements();
+  W.conquistas = `
+    <div class="section-label">Conquistas & Medalhas</div>
+    <div class="card" style="margin-bottom:24px">${ach.map(g => `
+      <div class="badge-cat">${g.cat}</div>
+      <div class="badge-grid">${g.items.map(it => `
+        <div class="badge ${it.unlocked?'unlocked':'locked'}">
+          <div class="badge-icon" style="color:${it.unlocked?'var(--accent-cyan)':'var(--text-muted)'}">${g.icon}</div>
+          <div class="badge-label">${it.label}</div>
+        </div>`).join('')}</div>
+    `).join('')}</div>`;
+
+  W.disciplinas = `
+    <div class="section-label">Disciplinas</div>
+    <div class="disc-cards-grid" style="margin-bottom:24px">${state.discs.map(d => {
+      const lv = getLevel(d.xp);
+      return `
+        <div class="disc-card" onclick="openAddDisc('${d.id}')" title="Editar ${d.nome}">
+          <div class="disc-card-top"><span class="disc-dot" style="background:${d.cor}"></span><span class="disc-card-name">${d.nome}</span></div>
+          <div class="disc-card-level">Nível <b>${lv.level}</b></div>
+          <div class="prog-bar"><div class="prog-fill" style="background:${d.cor};width:${lv.pct}%"></div></div>
+          <div class="disc-xp-row" style="display:flex;justify-content:space-between;font-size:9px;color:var(--text-muted);margin-top:4px">
+            <span>${d.xp} XP · ${fmtHours(discFocusSeconds(d.id))}</span>
+            <span>${lv.current}/${lv.needed} p/ Nv. ${lv.level+1}</span>
+          </div>
+        </div>`;
+    }).join('')}</div>`;
+
+  const recent3 = state.provas.slice(0,3);
+  W.provas = !recent3.length ? '' : `
+    <div class="section-label">Últimas Provas</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:24px">${recent3.map(p => {
+      const pp = provaPct(p);
+      return `<div class="prova-card" style="flex:1;min-width:220px">
+        <div class="prova-header"><div><div class="prova-name">${p.nome}</div><div class="prova-date">${formatDate(p.data)}</div></div><div class="prova-pct ${pctClass(pp)}">${pp}%</div></div>
+        ${p.disciplinas.slice(0,3).map(r => {
+          const disc = getDiscById(r.id); const pp2 = pct(r.acertos, r.total);
+          return `<div class="prova-disc-row"><div class="prova-disc-name"><span class="disc-dot" style="background:${disc?.cor||'#888'}"></span>${disc?.nome||r.id}</div><div style="display:flex;gap:10px;align-items:center"><span class="prova-disc-score">${r.acertos}/${r.total}</span><span class="prova-disc-pct" style="color:${pctColor(pp2)}">${pp2}%</span></div></div>`;
         }).join('')}
-        ${p.disciplinas.length > 3 ? `<div style="font-size:10px;color:var(--text-muted);margin-top:6px">+${p.disciplinas.length-3} mais...</div>` : ''}
-      </div>
-    `;
-  }).join('');
+      </div>`;
+    }).join('')}</div>`;
 
   el.innerHTML = `
-    <div style="margin-bottom:20px">
-      <div class="page-header">
-        <div>
-          <div class="page-title">Visão Geral</div>
-          <div class="page-sub">Seu progresso geral em todas as disciplinas.</div>
-        </div>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px">
-        <div class="stat-box">
-          <div class="stat-box-label">XP Total</div>
-          <div class="stat-box-val" style="color:var(--accent-cyan)">${total.toLocaleString()}</div>
-          <div class="stat-box-sub">acumulado</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-box-label">Nível Global</div>
-          <div class="stat-box-val" style="color:var(--green)">${glv.level}</div>
-          <div class="stat-box-sub">${glv.current}/${glv.needed} XP p/ próx.</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-box-label">Provas</div>
-          <div class="stat-box-val">${state.provas.length}</div>
-          <div class="stat-box-sub">registradas</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-box-label">Disciplinas</div>
-          <div class="stat-box-val">${state.discs.length}</div>
-          <div class="stat-box-sub">ativas</div>
-        </div>
-      </div>
+    <div class="page-header">
+      <div><div class="page-title">Visão Geral</div><div class="page-sub">Seu progresso geral — arraste os blocos pelo ícone <span style="vertical-align:middle">${GRIP}</span> para reorganizar.</div></div>
+      <button class="btn-outline" onclick="resetLayout()">Restaurar layout</button>
     </div>
-
-    <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:16px;margin-bottom:24px">
-      <div class="card">
-        <div class="section-label">Radar de Desempenho</div>
-        ${buildRadar(state.discs, state.provas)}
-      </div>
-      <div class="card">
-        <div class="section-label">Evolução de Aproveitamento</div>
-        ${buildLineChart(state.provas)}
-      </div>
-    </div>
-
-    <div class="section-label">Disciplinas</div>
-    <div class="disc-cards-grid">${discCardsHTML}</div>
-
-    ${recent3.length ? `
-      <div class="section-label" style="margin-top:8px">Últimas Provas</div>
-      <div style="display:flex;gap:16px;flex-wrap:wrap">${recentHTML}</div>
-    ` : ''}
+    ${getLayout().map(wid => widget(wid, W[wid] || '')).join('')}
   `;
 }
 
@@ -1585,12 +2231,71 @@ function renderProvas() {
 
 // ─── OBJETIVOS ───────────────────────────────────────────────────────────────
 
+// ─── DIRECIONAMENTO ──────────────────────────────────────────────────────────
+
+const GOALS = { mat:100, qui:100, fis:100, bio:80, por:100, geo:80, his:70, fil:70, soc:50, ing:60, art:60 };
+function discGoal(id) { return GOALS[id] || 80; }
+function discAvg3(id) {
+  const rows = state.provas.flatMap(p => p.disciplinas.filter(x => x.id === id));
+  if (!rows.length) return null;
+  const last3 = rows.slice(-3);
+  return Math.round(last3.reduce((s,r) => s + pct(r.acertos, r.total), 0) / last3.length);
+}
+
+function renderDirecionamento() {
+  const el = document.getElementById('tab-direcionamento');
+  const items = state.discs.map(d => {
+    const goal = discGoal(d.id);
+    const avg = discAvg3(d.id);
+    const gap = avg === null ? goal : Math.max(0, goal - avg);
+    const focusH = discFocusSeconds(d.id) / 3600;
+    const efic = avg === null ? null : Math.round((avg/100) / Math.max(0.5, focusH + 0.5) * 100) / 100;
+    const eficPen = efic === null ? 8 : (1 - Math.min(1, efic)) * 12;
+    const timePen = focusH < 1 ? 8 : 0;
+    const urg = Math.round(gap * 1.0 + goal * 0.3 + eficPen + timePen);
+    return { d, goal, avg, gap, focusH, efic, urg };
+  }).sort((a,b) => b.urg - a.urg);
+
+  const tier = (it, klass, isPrimary) => {
+    const { d, goal, avg, gap, focusH, efic, urg } = it;
+    const comfy = gap <= 0;
+    const tag = (!isPrimary && comfy) ? `<span class="dir-tag">Confortável · só revisão</span>` : '';
+    const reason = isPrimary
+      ? `${d.nome} deve ser seu foco absoluto agora: você está a ${gap}% de atingir sua meta de ${goal}%, ela representa um peso alto (${goal}%) no seu objetivo${efic!==null && efic<1 ? `, o retorno está abaixo do esforço investido (eficiência ${efic.toFixed(2)})` : ''}${focusH < 1 ? ', e há pouco tempo de estudo recente registrado nela' : ''}.`
+      : '';
+    return `
+      <div class="dir-card ${klass}">
+        ${tag}
+        <div class="dir-card-name" style="color:${isPrimary ? 'var(--green)' : d.cor}">${isPrimary ? '' : `<span class="disc-dot" style="background:${d.cor};margin-right:6px"></span>`}${d.nome}</div>
+        ${reason ? `<div class="dir-reason">${reason}</div>` : ''}
+        <div class="dir-metrics">
+          <span>Gap da meta: <b>${gap}%</b> (${avg===null?'—':avg+'%'} → ${goal}%)</span>
+          <span>Eficiência: <b>${efic===null?'—':efic.toFixed(2)}</b></span>
+          <span>Tempo: <b>${(Math.round(focusH*10)/10)}h</b></span>
+          <span>Peso: <b>${goal}%</b></span>
+          <span>Urgência: <b class="urg">${urg}</b></span>
+        </div>
+      </div>`;
+  };
+
+  const primary = items.slice(0,1);
+  const secondary = items.slice(1,3);
+  const tertiary = items.slice(3);
+
+  el.innerHTML = `
+    <div class="page-header">
+      <div><div class="page-title" style="font-style:italic">Direcionamento</div>
+      <div class="page-sub">Consultor estratégico em tempo real. Cruza Gap da Meta, Eficiência (Esforço×Retorno), Tempo investido e Peso no Objetivo para dizer o que estudar a seguir.</div></div>
+    </div>
+    ${primary.length ? `<div class="dir-tier-label">Prioridade Primária — Alvo Crítico</div>${primary.map(it => tier(it,'primary',true)).join('')}` : '<div class="card" style="color:var(--text-muted)">Adicione disciplinas para receber direcionamento.</div>'}
+    ${secondary.length ? `<div class="dir-tier-label">Prioridade Secundária — Ajustes Moderados</div>${secondary.map(it => tier(it,'',false)).join('')}` : ''}
+    ${tertiary.length ? `<div class="dir-tier-label">Prioridade Terciária — Manutenção</div>${tertiary.map(it => tier(it,'',false)).join('')}` : ''}
+  `;
+}
+
 function renderObjetivos() {
   const el = document.getElementById('tab-objetivos');
-  const goals = {
-    mat:100, qui:100, fis:100, bio:80,
-    por:100, geo:80, his:70, fil:70, soc:50, ing:60, art:60
-  };
+  const goals = GOALS;
   function discAvg(discId) {
     const rows = state.provas.flatMap(p=>p.disciplinas.filter(x=>x.id===discId));
     if (!rows.length) return 0;
@@ -1644,7 +2349,9 @@ function renderSidebar() {
   el.innerHTML = state.discs.map(d => {
     const lv = getLevel(d.xp);
     return `
-      <div class="disc-item">
+      <div class="disc-item" title="Editar ou remover ${d.nome}" role="button" tabindex="0"
+        onclick="openAddDisc('${d.id}')"
+        onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openAddDisc('${d.id}')}">
         <div class="disc-item-left">
           <span class="disc-dot" style="background:${d.cor}"></span>
           <span>${d.nome}</span>
@@ -1667,6 +2374,7 @@ function renderSidebar() {
 // ─── RENDER ──────────────────────────────────────────────────────────────────
 
 function render() {
+  renderAvatar();
   renderSidebar();
   renderTab(currentTab);
 }
