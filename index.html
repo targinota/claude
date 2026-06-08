@@ -130,6 +130,14 @@
     align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0;
   }
   .menu-toggle:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 34px; background: transparent;
+    border: 1px solid var(--bg-border); color: var(--text-dim);
+    border-radius: var(--r-sm); transition: all .15s; flex-shrink: 0;
+  }
+  .icon-btn:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: translateY(-1px); }
+  .icon-btn:active { transform: scale(.94); }
   .sidebar-scrim {
     position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,.55);
     backdrop-filter: blur(2px); animation: fadeScrim .2s ease;
@@ -146,7 +154,7 @@
     padding: 8px 18px; border-radius: 6px; cursor: pointer; font-size: 12px;
     font-weight: 700; letter-spacing: .5px; transition: background .15s;
   }
-  .btn-primary:hover { background: #2563eb; }
+  .btn-primary:hover { filter: brightness(1.12); }
 
   /* NAVBAR */
   #navbar {
@@ -417,8 +425,19 @@
   .color-swatch:hover { transform: scale(1.15); }
   .color-swatch.active { border-color: #fff; transform: scale(1.1); }
   .color-custom-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
-  .color-custom-preview { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--bg-border); cursor: pointer; flex-shrink: 0; }
+  .color-custom-preview { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--bg-border); cursor: pointer; flex-shrink: 0; transition: border-color .15s, transform .15s; }
+  .color-custom-preview.active { border-color: #fff; transform: scale(1.1); }
   input[type=color] { width: 0; height: 0; opacity: 0; position: absolute; pointer-events: none; }
+
+  /* THEME PREVIEW (appearance modal) */
+  .theme-preview { background: var(--bg-deep); border: 1px solid var(--bg-border); border-radius: var(--r-md); padding: 14px 16px; }
+  .tp-tabs { display: flex; gap: 18px; border-bottom: 1px solid var(--bg-border); margin-bottom: 14px; }
+  .tp-tab { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); padding-bottom: 8px; border-bottom: 2px solid transparent; }
+  .tp-tab-active { color: var(--accent-cyan); border-bottom-color: var(--accent-cyan); }
+  .tp-row { display: flex; align-items: center; gap: 14px; }
+  .tp-bar { flex: 1; height: 6px; border-radius: 4px; background: #1e2d4a; overflow: hidden; }
+  .tp-bar-fill { width: 68%; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan)); }
+  .tp-btn { background: var(--accent-blue); color: #fff; border: none; border-radius: var(--r-sm); padding: 7px 16px; font-size: 12px; font-weight: 700; }
 
   /* ─── RESPONSIVE ─────────────────────────────────────────────────── */
 
@@ -511,6 +530,9 @@
       <div class="topbar-tagline">Pronto para o <b>foco profundo</b>?</div>
     </div>
     <div class="topbar-actions">
+      <button class="icon-btn" aria-label="Personalizar aparência" title="Aparência" onclick="openAppearance()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>
+      </button>
       <button class="btn-outline" onclick="openZoneIn()">Zone In</button>
       <button class="btn-primary" onclick="showTab('provas'); setTimeout(openAddProva,100)">+ Registrar Prova</button>
     </div>
@@ -586,6 +608,40 @@
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-disc')">Cancelar</button>
       <button class="btn-save" onclick="saveDisc()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- APPEARANCE / THEME MODAL -->
+<div id="modal-appearance" class="modal-overlay hidden">
+  <div class="modal">
+    <h2>Aparência</h2>
+    <p class="modal-sub">Escolha a cor de destaque e deixe o StudyOS com a sua cara. A mudança é aplicada na hora e fica salva.</p>
+
+    <div class="theme-preview" id="theme-preview">
+      <div class="tp-tabs">
+        <span class="tp-tab tp-tab-active">Visão Geral</span>
+        <span class="tp-tab">Análises</span>
+      </div>
+      <div class="tp-row">
+        <div class="tp-bar"><div class="tp-bar-fill"></div></div>
+        <button class="tp-btn">Botão</button>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:18px">
+      <label class="form-label">Cor de destaque</label>
+      <div class="color-swatches" id="accent-swatches"></div>
+      <div class="color-custom-row">
+        <div class="color-custom-preview" id="accent-custom-preview" onclick="document.getElementById('accent-cor-hidden').click()" title="Cor personalizada"></div>
+        <span style="font-size:11px;color:var(--text-muted)">Cor personalizada</span>
+        <input type="color" id="accent-cor-hidden" value="#06b6d4" oninput="setAccent(this.value)">
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="restoreAccent()">Restaurar padrão</button>
+      <button class="btn-save" onclick="closeModal('modal-appearance')">Concluir</button>
     </div>
   </div>
 </div>
@@ -726,6 +782,79 @@ function toggleSidebar(force) {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && document.getElementById('sidebar').classList.contains('open')) toggleSidebar(false);
 });
+
+// ─── APPEARANCE / THEME ──────────────────────────────────────────────────────
+
+const DEFAULT_ACCENT = '#06b6d4';
+
+// Variedade curada de cores de destaque que funcionam bem no tema escuro
+const ACCENT_PRESETS = [
+  { val:'#06b6d4', nome:'Ciano' },
+  { val:'#3b82f6', nome:'Azul' },
+  { val:'#6366f1', nome:'Índigo' },
+  { val:'#8b5cf6', nome:'Violeta' },
+  { val:'#a855f7', nome:'Roxo' },
+  { val:'#d946ef', nome:'Magenta' },
+  { val:'#ec4899', nome:'Rosa' },
+  { val:'#f43f5e', nome:'Rubi' },
+  { val:'#ef4444', nome:'Vermelho' },
+  { val:'#f97316', nome:'Laranja' },
+  { val:'#f59e0b', nome:'Âmbar' },
+  { val:'#eab308', nome:'Ouro' },
+  { val:'#84cc16', nome:'Lima' },
+  { val:'#22c55e', nome:'Verde' },
+  { val:'#10b981', nome:'Esmeralda' },
+  { val:'#14b8a6', nome:'Turquesa' },
+];
+
+function getAccent() { return (state.theme && state.theme.accent) || DEFAULT_ACCENT; }
+
+function applyTheme() {
+  const a = getAccent();
+  const root = document.documentElement;
+  root.style.setProperty('--accent-cyan', a);
+  root.style.setProperty('--accent-blue', a);
+}
+
+function setAccent(color) {
+  state.theme = state.theme || {};
+  state.theme.accent = color;
+  saveState();
+  applyTheme();
+  renderAccentSwatches();
+}
+
+function restoreAccent() {
+  setAccent(DEFAULT_ACCENT);
+  showToast('Cor padrão restaurada.');
+}
+
+function renderAccentSwatches() {
+  const cur = getAccent();
+  const el = document.getElementById('accent-swatches');
+  if (!el) return;
+  const isPreset = ACCENT_PRESETS.some(p => p.val.toLowerCase() === cur.toLowerCase());
+  el.innerHTML = ACCENT_PRESETS.map(p => `
+    <div class="color-swatch ${p.val.toLowerCase()===cur.toLowerCase()?'active':''}"
+      style="background:${p.val}" title="${p.nome}" role="button" tabindex="0"
+      aria-label="Cor ${p.nome}" aria-pressed="${p.val.toLowerCase()===cur.toLowerCase()}"
+      onclick="setAccent('${p.val}')"
+      onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();setAccent('${p.val}')}">
+    </div>
+  `).join('');
+  const preview = document.getElementById('accent-custom-preview');
+  if (preview) {
+    preview.style.background = cur;
+    preview.classList.toggle('active', !isPreset);
+  }
+  const hidden = document.getElementById('accent-cor-hidden');
+  if (hidden) hidden.value = cur;
+}
+
+function openAppearance() {
+  renderAccentSwatches();
+  document.getElementById('modal-appearance').classList.remove('hidden');
+}
 
 // ─── ZONE IN ────────────────────────────────────────────────────────────────
 
@@ -1544,6 +1673,7 @@ function render() {
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 
+applyTheme();
 render();
 </script>
 </body>
