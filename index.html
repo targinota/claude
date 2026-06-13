@@ -3,9 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0a0d1a">
-<meta name="description" content="Painel Targino — plataforma de estudos com foco profundo, gamificação por XP e análise de desempenho em provas.">
-<title>Painel Targino — Plataforma de Estudos</title>
+<meta name="theme-color" content="#0a0f1e">
+<meta name="description" content="Modo Monge — plataforma de estudos com foco profundo, IA, flashcards, simulados, cronograma e biblioteca.">
+<title>Modo Monge — Plataforma de Estudos</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Modo Monge">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap">
@@ -491,12 +495,27 @@
   .flashcard-back { transform: rotateY(180deg); }
   .flashcard-back { border-color: var(--accent-cyan); }
   .fc-progress { text-align: center; font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+  .fc-due-banner { background: rgba(34,197,94,.12); border: 1px solid rgba(34,197,94,.35); color: #86efac; padding: 12px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 18px; }
   .fc-grade { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
   .fc-grade button { padding: 10px 18px; border-radius: 8px; border: 1px solid var(--bg-border); background: transparent; color: var(--text-primary); cursor: pointer; font-size: 13px; font-weight: 700; font-family: inherit; }
   .fc-grade .miss { border-color: rgba(239,68,68,.5); color: #fca5a5; }
   .fc-grade .hit  { border-color: rgba(34,197,94,.5); color: #86efac; }
   /* Feedback Feynman (markdown simples) */
   .zi-ai-feedback { background: var(--bg-card, rgba(255,255,255,.04)); border: 1px solid var(--bg-border); border-radius: 12px; padding: 20px 22px; margin-top: 18px; line-height: 1.6; font-size: 14px; white-space: pre-wrap; }
+  /* Simulado */
+  .sim-q { font-size: 17px; font-weight: 600; line-height: 1.5; margin-bottom: 18px; }
+  .sim-opts { display: flex; flex-direction: column; gap: 10px; }
+  .sim-opt { display: flex; align-items: center; gap: 12px; text-align: left; background: var(--bg-card, rgba(255,255,255,.04)); border: 1px solid var(--bg-border); color: var(--text-primary); border-radius: 10px; padding: 13px 16px; font-size: 14px; font-family: inherit; cursor: pointer; transition: border-color .15s, background .15s; }
+  .sim-opt:not(:disabled):hover { border-color: var(--accent-cyan); }
+  .sim-opt:disabled { cursor: default; }
+  .sim-opt .sim-letter { flex: none; width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.07); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 12px; }
+  .sim-opt.correct { border-color: var(--green); background: rgba(34,197,94,.12); }
+  .sim-opt.correct .sim-letter { background: var(--green); color: #04220f; }
+  .sim-opt.wrong { border-color: var(--red); background: rgba(239,68,68,.1); }
+  .sim-opt.wrong .sim-letter { background: var(--red); color: #fff; }
+  .sim-explain { margin-top: 16px; padding: 13px 16px; border-radius: 10px; font-size: 13px; line-height: 1.55; }
+  .sim-explain.ok { background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.3); }
+  .sim-explain.no { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.3); }
 
   /* ZONE IN — SESSÃO DE FOCO (full screen) */
   #zonein-content.zi-session { width: 100%; max-width: 100%; height: 100dvh; text-align: left; }
@@ -556,6 +575,12 @@
   .zi-meta-label { font-size: 10px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-top: 56px; }
   .zi-meta-title { font-size: 26px; font-weight: 700; margin-top: 10px; }
   .zi-meta-sub { font-size: 14px; font-style: italic; color: var(--text-dim); margin-top: 6px; }
+  .zi-pomo { display: inline-flex; align-items: center; gap: 14px; margin-top: 14px; padding: 8px 16px; border-radius: 999px; background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.35); }
+  .zi-pomo.pausa { background: rgba(34,197,94,.12); border-color: rgba(34,197,94,.35); }
+  .zi-pomo-phase { font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+  .zi-pomo-time { font-size: 20px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .zi-pomo-count { font-size: 11px; color: var(--text-muted); }
+  .btn-timer-pause.pomo-on { background: rgba(239,68,68,.18); border-color: rgba(239,68,68,.4); color: #fca5a5; }
   .zi-warm { position: absolute; left: 28px; bottom: 24px; width: 150px; }
   .zi-warm-label { font-size: 10px; letter-spacing: 2px; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase; }
   .zi-warm-sub { font-size: 10px; color: var(--text-muted); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
@@ -778,6 +803,32 @@
   .star-pick .star { font-size: 26px; cursor: pointer; color: #3a445e; line-height: 1; }
   .star-pick .star.on { color: #f5b301; }
 
+  /* ─── MAPA DE CALOR ──────────────────────────────────────────────── */
+  .hm-grid { display: flex; gap: 4px; }
+  .hm-col { display: flex; flex-direction: column; gap: 4px; }
+  .hm-cell { width: 13px; height: 13px; border-radius: 3px; background: rgba(255,255,255,.05); }
+  .hm-cell.lv0 { background: rgba(255,255,255,.05); }
+  .hm-cell.lv1 { background: rgba(6,182,212,.30); }
+  .hm-cell.lv2 { background: rgba(6,182,212,.55); }
+  .hm-cell.lv3 { background: rgba(6,182,212,.80); }
+  .hm-cell.lv4 { background: var(--accent-cyan); }
+  .hm-cell.future { background: transparent; }
+  .hm-legend { display: flex; align-items: center; gap: 4px; margin-top: 12px; font-size: 11px; color: var(--text-muted); }
+  .hm-legend .hm-cell { width: 11px; height: 11px; }
+
+  /* ─── CRONOGRAMA ─────────────────────────────────────────────────── */
+  .cron-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 14px; }
+  .cron-day { background: var(--surface); border: 1px solid var(--bg-border); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 130px; }
+  .cron-day.is-today { border-color: var(--accent-cyan); }
+  .cron-day-name { font-size: 12px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); }
+  .cron-chips { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+  .cron-empty { font-size: 12px; color: var(--text-muted); font-style: italic; }
+  .cron-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 5px 8px; border-radius: 6px; }
+  .cron-chip .cron-x { margin-left: auto; cursor: pointer; opacity: .7; font-size: 11px; }
+  .cron-chip .cron-x:hover { opacity: 1; }
+  .cron-add { background: transparent; border: 1px dashed var(--bg-border); color: var(--text-muted); border-radius: 6px; padding: 5px 8px; font-size: 12px; font-family: inherit; cursor: pointer; outline: none; }
+  .cron-add:focus { border-color: var(--accent-cyan); }
+
   /* ─── ANIMAÇÕES FLUIDAS ──────────────────────────────────────────── */
   @keyframes fadeUp   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
   @keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
@@ -999,6 +1050,7 @@
     <div class="nav-tab" data-tab="analises" role="tab" tabindex="0" aria-selected="false" onclick="showTab('analises')" onkeydown="navKey(event,'analises')">Análises</div>
     <div class="nav-tab" data-tab="provas" role="tab" tabindex="0" aria-selected="false" onclick="showTab('provas')" onkeydown="navKey(event,'provas')">Provas</div>
     <div class="nav-tab" data-tab="direcionamento" role="tab" tabindex="0" aria-selected="false" onclick="showTab('direcionamento')" onkeydown="navKey(event,'direcionamento')">Direcionamento</div>
+    <div class="nav-tab" data-tab="cronograma" role="tab" tabindex="0" aria-selected="false" onclick="showTab('cronograma')" onkeydown="navKey(event,'cronograma')">Cronograma</div>
     <div class="nav-tab" data-tab="objetivos" role="tab" tabindex="0" aria-selected="false" onclick="showTab('objetivos')" onkeydown="navKey(event,'objetivos')">Objetivos</div>
     <div class="nav-tab" data-tab="biblioteca" role="tab" tabindex="0" aria-selected="false" onclick="showTab('biblioteca')" onkeydown="navKey(event,'biblioteca')">Biblioteca</div>
   </nav>
@@ -1007,6 +1059,7 @@
     <div id="tab-analises" class="hidden"></div>
     <div id="tab-provas" class="hidden"></div>
     <div id="tab-direcionamento" class="hidden"></div>
+    <div id="tab-cronograma" class="hidden"></div>
     <div id="tab-objetivos" class="hidden"></div>
     <div id="tab-biblioteca" class="hidden"></div>
   </div>
@@ -1177,6 +1230,15 @@
       <div id="set-ai-help" style="font-size:11px;color:var(--text-muted);margin-top:8px"></div>
     </div>
 
+    <div class="ai-divider"></div>
+    <h2 style="font-size:15px">Backup dos dados</h2>
+    <p class="modal-sub">Seus dados ficam salvos só neste navegador. Exporte um arquivo de backup para não perder nada (e levar para outro computador).</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="btn-outline" onclick="exportData()">⬇ Exportar meus dados</button>
+      <button class="btn-outline" onclick="document.getElementById('import-input').click()">⬆ Importar backup</button>
+      <input type="file" id="import-input" accept="application/json,.json" class="hidden" onchange="importData(event)">
+    </div>
+
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('modal-settings')">Cancelar</button>
       <button class="btn-save" onclick="saveSettings()">Salvar</button>
@@ -1322,10 +1384,34 @@ function normalizeState(s) {
   // Configuração de IA (cada usuário guarda a própria chave neste navegador)
   s.ai = s.ai || { provider: 'gemini', keys: {} };
   s.ai.keys = s.ai.keys || {};
-  s.flashcards = s.flashcards || [];           // {id, discId, topic, front, back, createdAt, level}
+  s.flashcards = s.flashcards || [];           // {id, discId, topic, front, back, createdAt, level, lastReviewed, nextDue}
+  s.flashcards.forEach(c => {                   // migra cards antigos para revisão espaçada
+    if (c.level == null) c.level = 0;
+    if (!('lastReviewed' in c)) c.lastReviewed = null;
+    if (!('nextDue' in c)) c.nextDue = c.createdAt || new Date().toISOString();
+  });
   s.books = s.books || [];                      // {id, title, author, status, rating, review, startDate, endDate, pages, cover, createdAt}
   s.direcPlan = s.direcPlan || null;            // {text, at} — último plano gerado pela IA
+  s.schedule = s.schedule || {};                // cronograma: { '0'..'6': [discId, ...] }
   return s;
+}
+
+// ── Revisão espaçada (intervalos por nível, em dias) ──
+const SR_INTERVALS = [0, 1, 3, 7, 16, 35];
+function cardIsDue(c) {
+  if (!c.nextDue) return true;
+  return new Date(c.nextDue) <= new Date();
+}
+function scheduleCard(c, hit) {
+  c.level = hit ? Math.min(SR_INTERVALS.length - 1, (c.level || 0) + 1) : 0;
+  const days = SR_INTERVALS[c.level] || 0;
+  const next = new Date();
+  next.setDate(next.getDate() + days);
+  c.lastReviewed = new Date().toISOString();
+  c.nextDue = next.toISOString();
+}
+function dueCards(discId) {
+  return (state.flashcards || []).filter(c => (discId == null || c.discId === discId) && cardIsDue(c));
 }
 
 function saveState() {
@@ -1426,8 +1512,8 @@ function focusStreak() {
   while (days.has(fmt(d))) { streak++; d.setDate(d.getDate() - 1); }
   return streak;
 }
-const TYPE_LABEL = { pratica:'Prática', teoria:'Teoria', revisao:'Revisão', leitura:'Leitura', flashcard:'Flashcards (IA)', feynman:'Feynman (IA)' };
-const AI_TYPES = new Set(['flashcard', 'feynman']);
+const TYPE_LABEL = { pratica:'Prática', teoria:'Teoria', revisao:'Revisão', leitura:'Leitura', flashcard:'Flashcards (IA)', feynman:'Feynman (IA)', simulado:'Simulado (IA)' };
+const AI_TYPES = new Set(['flashcard', 'feynman', 'simulado']);
 function daysUntil(dateStr) {
   if (!dateStr) return null;
   const target = new Date(dateStr + 'T00:00:00');
@@ -1852,6 +1938,42 @@ function saveSettings() {
   showToast('Configurações salvas!');
 }
 
+// ─── BACKUP: exportar / importar ──────────────────────────────────────────────
+function exportData() {
+  try {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `modomonge-backup-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    showToast('Backup exportado!');
+  } catch (e) { showToast('Não foi possível exportar.'); }
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data || typeof data !== 'object' || !('discs' in data)) throw new Error('inválido');
+      if (!confirm('Importar este backup vai SUBSTITUIR todos os dados atuais deste navegador. Continuar?')) return;
+      state = normalizeState(data);
+      saveState();
+      closeModal('modal-settings');
+      applyTheme(); renderAvatar(); renderSidebar(); render();
+      showToast('Backup importado com sucesso!');
+    } catch (err) {
+      showToast('Arquivo de backup inválido.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
 // ─── IA: chamada unificada (Gemini / OpenAI / Claude) direto do navegador ──────
 function aiConfigured() {
   const prov = state.ai?.provider;
@@ -1951,6 +2073,10 @@ let ziPerQ = 180, ziGoalCount = 5;
 // estado dos modos de IA
 let ziCards = [], ziCardIdx = 0, ziCardFlipped = false, ziCardReviewMode = false;
 let ziChat = []; // histórico do mini-chat de dúvida
+let ziQuiz = [], ziQuizIdx = 0, ziQuizAnswers = []; // simulado de IA
+// Pomodoro
+const POMO_FOCO = 25 * 60, POMO_PAUSA = 5 * 60;
+let ziPomodoro = false, ziPomoPhase = 'foco', ziPomoLeft = POMO_FOCO, ziPomoCount = 0;
 const WARM_PHASES = [
   { at: 0,    label: 'Aquecendo',  next: 300 },
   { at: 300,  label: 'Em fluxo',   next: 1500 },
@@ -1966,6 +2092,7 @@ const STUDY_TYPES = [
   { id:'leitura',  icon: SVG('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'), label:'Leitura' },
   { id:'flashcard', icon: SVG('<rect x="2" y="6" width="14" height="12" rx="2"/><path d="M8 18v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-2"/>'), label:'Flashcards', ai:true },
   { id:'feynman',  icon: SVG('<path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2z"/><path d="M9 22h6"/>'), label:'Feynman', ai:true },
+  { id:'simulado', icon: SVG('<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>'), label:'Simulado', ai:true },
 ];
 
 function openZoneIn() {
@@ -2051,6 +2178,7 @@ function ziStartSession() {
   const typeLabel = TYPE_LABEL[ziType] || '';
   ziExercises = Array.from({length: ziGoalCount}, (_,i) => newExercise(i+1));
   ziDuvidas = []; ziPendencias = []; ziChat = [];
+  ziPomodoro = false; ziPomoPhase = 'foco'; ziPomoLeft = POMO_FOCO; ziPomoCount = 0;
   timerSeconds = 0; timerPaused = false;
   const el = document.getElementById('zonein-content');
   el.innerHTML = `
@@ -2074,6 +2202,11 @@ function ziStartSession() {
         <div class="zi-center">
           <div class="zi-timer-big" id="zi-timer">00:00:00</div>
           <div class="zi-timer-cap">Tempo de Foco</div>
+          <div class="zi-pomo hidden" id="zi-pomo-bar">
+            <span class="zi-pomo-phase" id="zi-pomo-phase">🍅 Foco</span>
+            <span class="zi-pomo-time" id="zi-pomo-time">25:00</span>
+            <span class="zi-pomo-count" id="zi-pomo-count">0 ciclos</span>
+          </div>
           <div class="zi-meta-label">Meta da Sessão</div>
           <div class="zi-meta-title">${disc?.nome||''} — ${typeLabel}</div>
           <div class="zi-meta-sub">Resolver e dissecar ${ziGoalCount} exercício(s) · ${Math.round(ziPerQ/60)}min/q</div>
@@ -2086,7 +2219,8 @@ function ziStartSession() {
         </div>
 
         <div class="zi-foot">
-          <div class="zi-foot-meta">${disc?.nome||''} · ${typeLabel} · Livre</div>
+          <div class="zi-foot-meta" id="zi-foot-meta">${disc?.nome||''} · ${typeLabel} · Livre</div>
+          <button class="btn-timer-pause" id="zi-pomo-btn" onclick="ziTogglePomodoro()">🍅 Pomodoro</button>
           <button class="btn-timer-pause" id="zi-pause-btn" onclick="ziTogglePause()">Pausar</button>
           <button class="btn-timer-end" onclick="ziFinish()">Encerrar Sessão</button>
         </div>
@@ -2200,6 +2334,7 @@ function ziTick() {
   timerSeconds++;
   const t = document.getElementById('zi-timer');
   if (t) t.textContent = fmtHMS(timerSeconds);
+  if (ziPomodoro) ziPomoTick();
   // cronômetro do exercício ativo
   const ai = ziActiveIndex();
   if (ai >= 0) {
@@ -2292,6 +2427,57 @@ function ziTogglePause() {
   if (btn) btn.textContent = timerPaused ? 'Retomar' : 'Pausar';
 }
 
+// ── Pomodoro (25 foco / 5 pausa) ──
+function ziTogglePomodoro() {
+  ziPomodoro = !ziPomodoro;
+  ziPomoPhase = 'foco'; ziPomoLeft = POMO_FOCO; ziPomoCount = 0;
+  const bar = document.getElementById('zi-pomo-bar');
+  const btn = document.getElementById('zi-pomo-btn');
+  const foot = document.getElementById('zi-foot-meta');
+  if (bar) bar.classList.toggle('hidden', !ziPomodoro);
+  if (btn) { btn.textContent = ziPomodoro ? '🍅 Pomodoro: ON' : '🍅 Pomodoro'; btn.classList.toggle('pomo-on', ziPomodoro); }
+  if (foot) foot.textContent = foot.textContent.replace(/· (Livre|Pomodoro)$/, '· ' + (ziPomodoro ? 'Pomodoro' : 'Livre'));
+  if (ziPomodoro) { ziPomoRender(); showToast('Pomodoro ativado · 25 min de foco'); }
+  else showToast('Pomodoro desativado · cronômetro livre');
+}
+
+function ziPomoTick() {
+  ziPomoLeft--;
+  if (ziPomoLeft <= 0) {
+    if (ziPomoPhase === 'foco') {
+      ziPomoCount++;
+      ziPomoPhase = 'pausa'; ziPomoLeft = POMO_PAUSA;
+      ziPomoNotify('Pausa! Respire 5 minutos. ☕');
+    } else {
+      ziPomoPhase = 'foco'; ziPomoLeft = POMO_FOCO;
+      ziPomoNotify('De volta ao foco! 🍅');
+    }
+  }
+  ziPomoRender();
+}
+
+function ziPomoRender() {
+  const phase = document.getElementById('zi-pomo-phase');
+  const time = document.getElementById('zi-pomo-time');
+  const count = document.getElementById('zi-pomo-count');
+  const bar = document.getElementById('zi-pomo-bar');
+  if (bar) bar.classList.toggle('pausa', ziPomoPhase === 'pausa');
+  if (phase) phase.textContent = ziPomoPhase === 'foco' ? '🍅 Foco' : '☕ Pausa';
+  if (time) time.textContent = fmtClock(Math.max(0, ziPomoLeft));
+  if (count) count.textContent = `${ziPomoCount} ciclo(s)`;
+}
+
+function ziPomoNotify(msg) {
+  showToast(msg);
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value = 660; g.gain.value = 0.08;
+    o.start(); o.stop(ctx.currentTime + 0.18);
+  } catch(e) {}
+}
+
 function ziFinish() {
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = null;
@@ -2336,7 +2522,9 @@ function ziStartAISession() {
   ziExercises = []; ziDuvidas = []; ziPendencias = [];
   timerSeconds = 0; timerPaused = false;
   ziCards = []; ziCardIdx = 0; ziCardFlipped = false; ziCardReviewMode = false;
+  ziQuiz = []; ziQuizIdx = 0; ziQuizAnswers = [];
   if (ziType === 'flashcard') renderFlashcardSetup();
+  else if (ziType === 'simulado') renderSimuladoSetup();
   else renderFeynmanSetup();
   if (timerInterval) clearInterval(timerInterval);
   timerInterval = setInterval(ziTick, 1000);
@@ -2347,19 +2535,22 @@ function renderFlashcardSetup() {
   const el = document.getElementById('zonein-content');
   const disc = getDiscById(ziDisc);
   const salvos = (state.flashcards || []).filter(c => c.discId === ziDisc).length;
+  const due = dueCards(ziDisc).length;
   el.innerHTML = `
     <div class="zi-ai-wrap">
       ${ziAIHeader('Flashcards com IA')}
       <div class="zi-ai-body">
+        ${due ? `<div class="fc-due-banner">📅 Você tem <b>${due}</b> card(s) para revisar hoje em ${esc(disc?.nome||'')}.</div>` : ''}
         <div class="zi-ai-label">Assunto para gerar flashcards</div>
         <input class="zi-ai-input" id="fc-topic" placeholder="Ex: Leis de Newton; Revolução Francesa; Ciclo de Krebs…">
         <div class="zi-ai-label">Quantos cards?</div>
         <input class="zi-ai-input" id="fc-count" type="number" min="3" max="20" value="8" style="max-width:120px">
         <div class="zi-ai-actions">
           <button class="zi-ai-btn" id="fc-gen-btn" onclick="genFlashcards()">✨ Gerar flashcards</button>
-          ${salvos ? `<button class="zi-ai-btn ghost" onclick="reviewSavedFlashcards()">Revisar salvos (${salvos})</button>` : ''}
+          ${due ? `<button class="zi-ai-btn" style="background:var(--green)" onclick="reviewDueFlashcards()">📅 Revisar pendentes (${due})</button>` : ''}
+          ${salvos ? `<button class="zi-ai-btn ghost" onclick="reviewSavedFlashcards()">Revisar todos (${salvos})</button>` : ''}
         </div>
-        <div class="zi-ai-note">A IA cria pares de pergunta e resposta. Você revisa um a um e os cards ficam salvos em <b>${esc(disc?.nome||'')}</b> para revisar depois.</div>
+        <div class="zi-ai-note">A IA cria pares de pergunta e resposta. Os cards ficam salvos em <b>${esc(disc?.nome||'')}</b> e a <b>revisão espaçada</b> traz de volta na hora certa os que você errou ou faz tempo que não vê.</div>
         <div id="fc-msg"></div>
       </div>
     </div>`;
@@ -2386,7 +2577,7 @@ async function genFlashcards() {
     const now = new Date().toISOString();
     ziCards = arr.filter(c => c && c.front && c.back).map(c => ({
       id: uid(), discId: ziDisc, topic, front: String(c.front), back: String(c.back),
-      createdAt: now, level: 0,
+      createdAt: now, level: 0, lastReviewed: null, nextDue: now,
     }));
     if (!ziCards.length) throw new Error('A IA não retornou flashcards válidos.');
     // salva para revisar depois
@@ -2404,6 +2595,13 @@ async function genFlashcards() {
 function reviewSavedFlashcards() {
   ziCards = (state.flashcards || []).filter(c => c.discId === ziDisc);
   if (!ziCards.length) { showToast('Nenhum flashcard salvo nesta matéria.'); return; }
+  ziCardIdx = 0; ziCardFlipped = false; ziCardReviewMode = true;
+  renderFlashcardStudy();
+}
+
+function reviewDueFlashcards() {
+  ziCards = dueCards(ziDisc);
+  if (!ziCards.length) { showToast('Nenhum card pendente agora. Em dia!'); return; }
   ziCardIdx = 0; ziCardFlipped = false; ziCardReviewMode = true;
   renderFlashcardStudy();
 }
@@ -2457,10 +2655,8 @@ function renderFlashcardStudy() {
 function flipCard() { ziCardFlipped = !ziCardFlipped; renderFlashcardStudy(); }
 function gradeCard(hit) {
   const c = ziCards[ziCardIdx];
-  if (c) { c.level = hit ? (c.level || 0) + 1 : 0; }
-  // persiste o nível também no card salvo
-  const saved = (state.flashcards || []).find(s => s.id === c.id);
-  if (saved) saved.level = c.level;
+  // o card de ziCards é o mesmo objeto salvo em state.flashcards (mesma referência)
+  if (c) scheduleCard(c, hit);
   saveState();
   ziCardIdx++; ziCardFlipped = false;
   renderFlashcardStudy();
@@ -2533,6 +2729,119 @@ function renderFeynmanFeedback(topic, text, feedback) {
         <div class="zi-ai-feedback">${miniMarkdown(feedback)}</div>
         <div class="zi-ai-actions">
           <button class="zi-ai-btn" onclick="renderFeynmanSetup()">Explicar de novo</button>
+          <button class="zi-ai-btn ghost" onclick="ziFinish()">Encerrar sessão</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── SIMULADO (quiz de múltipla escolha com IA) ──
+function renderSimuladoSetup() {
+  const el = document.getElementById('zonein-content');
+  const disc = getDiscById(ziDisc);
+  el.innerHTML = `
+    <div class="zi-ai-wrap">
+      ${ziAIHeader('Simulado com IA')}
+      <div class="zi-ai-body">
+        <div class="zi-ai-label">Assunto do simulado</div>
+        <input class="zi-ai-input" id="sim-topic" placeholder="Ex: Termodinâmica; Brasil Colônia; Funções do 2º grau…">
+        <div class="zi-ai-label">Quantas questões?</div>
+        <input class="zi-ai-input" id="sim-count" type="number" min="3" max="15" value="5" style="max-width:120px">
+        <div class="zi-ai-actions">
+          <button class="zi-ai-btn" id="sim-gen-btn" onclick="genSimulado()">✨ Gerar simulado</button>
+        </div>
+        <div class="zi-ai-note">A IA monta um simulado de múltipla escolha sobre <b>${esc(disc?.nome||'')}</b>, corrige na hora e explica cada resposta.</div>
+        <div id="sim-msg"></div>
+      </div>
+    </div>`;
+}
+
+async function genSimulado() {
+  const topic = document.getElementById('sim-topic').value.trim();
+  const count = Math.max(3, Math.min(15, parseInt(document.getElementById('sim-count').value) || 5));
+  const msg = document.getElementById('sim-msg');
+  if (!topic) { msg.innerHTML = `<div class="zi-ai-error">Digite um assunto primeiro.</div>`; return; }
+  const btn = document.getElementById('sim-gen-btn');
+  btn.disabled = true; btn.textContent = 'Gerando…';
+  msg.innerHTML = '';
+  const disc = getDiscById(ziDisc);
+  const sys = 'Você cria simulados de múltipla escolha em português do Brasil. '
+    + 'Cada questão tem um enunciado, 4 alternativas, o índice da correta (0 a 3) e uma explicação curta. '
+    + 'Responda SOMENTE com um array JSON, sem texto extra, no formato: '
+    + '[{"q":"enunciado","options":["a","b","c","d"],"answer":0,"explain":"por quê"}].';
+  const usr = `Disciplina: ${disc?.nome || 'geral'}. Crie ${count} questões de múltipla escolha sobre: ${topic}.`;
+  try {
+    const out = await callAI(sys, usr);
+    const arr = extractJSON(out);
+    if (!Array.isArray(arr) || !arr.length) throw new Error('A IA não retornou um simulado válido. Tente reformular o assunto.');
+    ziQuiz = arr.filter(q => q && q.q && Array.isArray(q.options) && q.options.length >= 2)
+      .map(q => ({ q: String(q.q), options: q.options.map(String), answer: Math.max(0, Math.min(q.options.length-1, parseInt(q.answer)||0)), explain: String(q.explain||'') }));
+    if (!ziQuiz.length) throw new Error('A IA não retornou questões válidas.');
+    ziQuizIdx = 0; ziQuizAnswers = [];
+    renderSimuladoQuestion();
+  } catch (e) {
+    btn.disabled = false; btn.textContent = '✨ Gerar simulado';
+    msg.innerHTML = `<div class="zi-ai-error">${esc(e.message)}</div>`;
+  }
+}
+
+function renderSimuladoQuestion() {
+  const el = document.getElementById('zonein-content');
+  const q = ziQuiz[ziQuizIdx];
+  const chosen = ziQuizAnswers[ziQuizIdx];
+  const answered = chosen != null;
+  const opts = q.options.map((opt, i) => {
+    let cls = 'sim-opt';
+    if (answered) {
+      if (i === q.answer) cls += ' correct';
+      else if (i === chosen) cls += ' wrong';
+    }
+    return `<button class="${cls}" ${answered?'disabled':''} onclick="answerSimulado(${i})">
+      <span class="sim-letter">${String.fromCharCode(65+i)}</span>${esc(opt)}</button>`;
+  }).join('');
+  el.innerHTML = `
+    <div class="zi-ai-wrap">
+      ${ziAIHeader('Simulado com IA')}
+      <div class="zi-ai-body">
+        <div class="fc-progress">Questão ${ziQuizIdx + 1} de ${ziQuiz.length}</div>
+        <div class="sim-q">${esc(q.q)}</div>
+        <div class="sim-opts">${opts}</div>
+        ${answered ? `
+          <div class="sim-explain ${chosen===q.answer?'ok':'no'}">
+            <b>${chosen===q.answer?'✅ Correto!':'❌ Resposta certa: '+String.fromCharCode(65+q.answer)}</b>
+            ${q.explain ? `<div style="margin-top:6px">${esc(q.explain)}</div>` : ''}
+          </div>
+          <div class="zi-ai-actions">
+            <button class="zi-ai-btn" onclick="nextSimulado()">${ziQuizIdx+1 < ziQuiz.length ? 'Próxima questão →' : 'Ver resultado'}</button>
+          </div>` : ''}
+      </div>
+    </div>`;
+}
+
+function answerSimulado(i) {
+  if (ziQuizAnswers[ziQuizIdx] != null) return;
+  ziQuizAnswers[ziQuizIdx] = i;
+  renderSimuladoQuestion();
+}
+
+function nextSimulado() {
+  if (ziQuizIdx + 1 < ziQuiz.length) { ziQuizIdx++; renderSimuladoQuestion(); }
+  else renderSimuladoResult();
+}
+
+function renderSimuladoResult() {
+  const el = document.getElementById('zonein-content');
+  const acertos = ziQuiz.reduce((s,q,i) => s + (ziQuizAnswers[i] === q.answer ? 1 : 0), 0);
+  const pct = Math.round(acertos / ziQuiz.length * 100);
+  el.innerHTML = `
+    <div class="zi-ai-wrap">
+      ${ziAIHeader('Simulado com IA')}
+      <div class="zi-ai-body" style="text-align:center">
+        <div style="font-size:48px;margin:24px 0 6px">${pct>=70?'🎉':pct>=50?'💪':'📚'}</div>
+        <h2>${acertos} de ${ziQuiz.length} (${pct}%)</h2>
+        <p class="zi-ai-note" style="text-align:center">${pct>=70?'Mandou bem! Domínio sólido.':pct>=50?'No caminho — revise os erros.':'Vale reforçar esse assunto.'}</p>
+        <div class="zi-ai-actions" style="justify-content:center">
+          <button class="zi-ai-btn" onclick="renderSimuladoSetup()">Novo simulado</button>
           <button class="zi-ai-btn ghost" onclick="ziFinish()">Encerrar sessão</button>
         </div>
       </div>
@@ -2818,7 +3127,7 @@ let currentTab = 'overview';
 
 function navKey(e, tab) {
   if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showTab(tab); return; }
-  const tabs = ['overview','analises','provas','direcionamento','objetivos','biblioteca'];
+  const tabs = ['overview','analises','provas','direcionamento','cronograma','objetivos','biblioteca'];
   let i = tabs.indexOf(currentTab);
   if (e.key === 'ArrowRight') i = (i + 1) % tabs.length;
   else if (e.key === 'ArrowLeft') i = (i - 1 + tabs.length) % tabs.length;
@@ -2835,7 +3144,7 @@ function showTab(tab) {
     t.classList.toggle('active', on);
     t.setAttribute('aria-selected', String(on));
   });
-  ['overview','analises','provas','direcionamento','objetivos','biblioteca'].forEach(t => {
+  ['overview','analises','provas','direcionamento','cronograma','objetivos','biblioteca'].forEach(t => {
     document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
   });
   renderTab(tab);
@@ -2850,6 +3159,7 @@ function renderTab(tab) {
   else if (tab === 'direcionamento') renderDirecionamento();
   else if (tab === 'objetivos') renderObjetivos();
   else if (tab === 'biblioteca') renderBiblioteca();
+  else if (tab === 'cronograma') renderCronograma();
 }
 
 // ─── OVERVIEW ────────────────────────────────────────────────────────────────
@@ -2882,7 +3192,42 @@ function computeAchievements() {
 }
 
 // ─── WIDGETS ARRASTÁVEIS ─────────────────────────────────────────────────────
-const DEFAULT_LAYOUT = ['countdown','stats','charts','historico','conquistas','disciplinas','provas'];
+const DEFAULT_LAYOUT = ['countdown','stats','heatmap','charts','historico','conquistas','disciplinas','provas'];
+
+function buildHeatmap() {
+  const WEEKS = 18;
+  const map = {};
+  (state.sessions || []).forEach(s => {
+    const d = (s.date || '').slice(0,10);
+    if (d) map[d] = (map[d] || 0) + (s.seconds || 0);
+  });
+  const today = new Date(); today.setHours(0,0,0,0);
+  const start = new Date(today);
+  start.setDate(start.getDate() - (WEEKS*7 - 1));
+  start.setDate(start.getDate() - ((start.getDay()+6)%7)); // alinha na segunda
+  const lvl = (s) => s == null ? -1 : s === 0 ? 0 : s < 1800 ? 1 : s < 3600 ? 2 : s < 7200 ? 3 : 4;
+  const cols = [];
+  let cur = new Date(start);
+  while (cur <= today) {
+    let week = '';
+    for (let i = 0; i < 7; i++) {
+      const future = cur > today;
+      const iso = cur.toISOString().slice(0,10);
+      const secs = future ? null : (map[iso] || 0);
+      const title = future ? '' : `${iso} · ${secs ? fmtHMS(secs) : 'sem foco'}`;
+      week += `<div class="hm-cell ${future?'future':'lv'+lvl(secs)}" title="${title}"></div>`;
+      cur.setDate(cur.getDate()+1);
+    }
+    cols.push(`<div class="hm-col">${week}</div>`);
+  }
+  const dias = Object.values(map).filter(v => v > 0).length;
+  return `
+    <div class="section-label">Mapa de Calor de Estudo · ${dias} dia(s) com foco</div>
+    <div class="card" style="margin-bottom:24px;overflow-x:auto">
+      <div class="hm-grid">${cols.join('')}</div>
+      <div class="hm-legend"><span>menos</span>${[0,1,2,3,4].map(n=>`<span class="hm-cell lv${n}"></span>`).join('')}<span>mais</span></div>
+    </div>`;
+}
 function getLayout() {
   let l = (state.layout && state.layout.length) ? state.layout.slice() : DEFAULT_LAYOUT.slice();
   DEFAULT_LAYOUT.forEach(w => { if (!l.includes(w)) l.push(w); });
@@ -2944,6 +3289,8 @@ function renderOverview() {
       <div class="stat-box"><div class="stat-box-label">Streak</div><div class="stat-box-val" style="color:var(--yellow)">${focusStreak()}</div><div class="stat-box-sub">dias seguidos</div></div>
       <div class="stat-box"><div class="stat-box-label">XP · Nível</div><div class="stat-box-val" style="color:var(--green)">${glv.level}</div><div class="stat-box-sub">${total.toLocaleString()} XP total</div></div>
     </div>`;
+
+  W.heatmap = buildHeatmap();
 
   W.charts = `
     <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:16px;margin-bottom:24px">
@@ -3558,6 +3905,81 @@ function deleteBook() {
   showToast('Livro removido.');
 }
 
+// ─── CRONOGRAMA ──────────────────────────────────────────────────────────────
+
+const WEEK_DAYS = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+
+function rankedDiscIds() {
+  return state.discs.map(d => {
+    const goal = discGoal(d.id);
+    const avg = discAvg3(d.id);
+    const gap = avg === null ? goal : Math.max(0, goal - avg);
+    return { id: d.id, urg: gap + goal * 0.3 };
+  }).sort((a,b) => b.urg - a.urg).map(x => x.id);
+}
+
+function renderCronograma() {
+  const el = document.getElementById('tab-cronograma');
+  const sched = state.schedule || {};
+  const today = (new Date().getDay() + 6) % 7; // 0 = Segunda
+
+  const dayCard = (idx) => {
+    const ids = sched[idx] || [];
+    const chips = ids.map(id => {
+      const d = getDiscById(id);
+      if (!d) return '';
+      return `<span class="cron-chip" style="background:${hexToRgba(d.cor,.16)};color:${d.cor}">
+        <span class="disc-dot" style="background:${d.cor}"></span>${esc(d.nome)}
+        <span class="cron-x" onclick="cronRemove(${idx},'${id}')" title="remover">✕</span></span>`;
+    }).join('');
+    const avail = state.discs.filter(d => !ids.includes(d.id));
+    const sel = avail.length ? `<select class="cron-add" onchange="cronAdd(${idx}, this.value)">
+        <option value="">+ adicionar</option>
+        ${avail.map(d => `<option value="${d.id}">${esc(d.nome)}</option>`).join('')}
+      </select>` : '';
+    return `<div class="cron-day ${idx===today?'is-today':''}">
+      <div class="cron-day-name">${WEEK_DAYS[idx]}${idx===today?' <span style="color:var(--accent-cyan);font-size:10px">• hoje</span>':''}</div>
+      <div class="cron-chips">${chips || '<span class="cron-empty">Livre</span>'}</div>
+      ${sel}
+    </div>`;
+  };
+
+  el.innerHTML = `
+    <div class="page-header">
+      <div><div class="page-title">Cronograma</div>
+      <div class="page-sub">Monte sua semana de estudos. Gere automaticamente com base nas prioridades do Direcionamento ou edite manualmente.</div></div>
+      <button class="btn-primary" onclick="cronAuto()">✨ Gerar automático</button>
+    </div>
+    ${state.discs.length ? '' : '<div class="card" style="color:var(--text-muted);margin-bottom:16px">Adicione disciplinas primeiro para montar o cronograma.</div>'}
+    <div class="cron-grid">${[0,1,2,3,4,5,6].map(dayCard).join('')}</div>
+  `;
+}
+
+function cronAdd(day, id) {
+  if (!id) return;
+  state.schedule = state.schedule || {};
+  state.schedule[day] = state.schedule[day] || [];
+  if (!state.schedule[day].includes(id)) state.schedule[day].push(id);
+  saveState(); renderCronograma();
+}
+function cronRemove(day, id) {
+  state.schedule = state.schedule || {};
+  state.schedule[day] = (state.schedule[day] || []).filter(x => x !== id);
+  saveState(); renderCronograma();
+}
+function cronAuto() {
+  if (!state.discs.length) { showToast('Adicione disciplinas primeiro.'); return; }
+  const ranked = rankedDiscIds();
+  const sched = {0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
+  // distribui em Seg–Sex pela ordem de urgência (mais urgente começa a semana)
+  ranked.forEach((id, i) => { sched[i % 5].push(id); });
+  // os 2 mais urgentes ganham uma revisão extra no sábado
+  ranked.slice(0,2).forEach(id => { if (!sched[5].includes(id)) sched[5].push(id); });
+  state.schedule = sched;
+  saveState(); renderCronograma();
+  showToast('Cronograma gerado! Domingo fica livre — ajuste como quiser.');
+}
+
 // ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 
 function renderSidebar() {
@@ -3721,6 +4143,14 @@ document.addEventListener('keydown', (e) => {
 applyTheme();
 render();
 maybeShowOnboarding();
+</script>
+<script>
+// Registra o service worker (PWA — instalável e offline). Só em https/localhost.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
